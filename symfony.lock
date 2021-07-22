@@ -228,6 +228,18 @@
             "config/packages/sensio_framework_extra.yaml"
         ]
     },
+    "symfony/apache-pack": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "9d254a22efca7264203eea98b866f16f944b2f09"
+        },
+        "files": [
+            "public/.htaccess"
+        ]
+    },
     "symfony/asset": {
         "version": "v5.3.2"
     },
@@ -606,6 +618,9 @@
     },
     "theseer/tokenizer": {
         "version": "1.2.0"
+    },
+    "twbs/bootstrap": {
+        "version": "v5.0.2"
     },
     "twig/extra-bundle": {
         "version": "v3.3.1"

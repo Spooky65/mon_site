@@ -1,0 +1,16 @@
+{% include 'base.html.twig' %}
+
+{% block body %}
+  <div class="container">
+    <div class="input-group my-3 col-3">
+      <span class="input-group-text" id="basic-addon1">#</span>
+      <input type="text" class="form-control" placeholder="Hashtag" aria-label="Hashtag" aria-describedby="basic-addon1">
+      <button class="btn btn-outline-secondary" type="button" id="basic-addon1">Go Live</button>
+    </div>
+  </div>
+  <a class="twitter-timeline"
+  href="https://twitter.com/hashtag/DominoChallenge?src=hashtag_click&f=live">
+  Tweets from https://twitter.com/twitter/lists/official-twitter-accts
+  </a>
+
+{% endblock %}

@@ -1,3 +1,4 @@
+{% set page = "hashtag" %}
 {% include 'base.html.twig' %}
 
 {% block body %}
@@ -13,4 +14,7 @@
   Tweets from https://twitter.com/twitter/lists/official-twitter-accts
   </a>
 
+{% endblock %}
+{% block footer %}
+    {% include 'footer.html.twig' %}
 {% endblock %}

@@ -1,0 +1,27 @@
+{% set page = "cv" %}
+{% include 'base.html.twig' %}
+
+{% block body %}
+
+{% if is_granted('ROLE_ADMIN') %}
+
+{{ form_start(form) }}
+    <div class="container">
+    
+        <div class="m-3 row">
+            {# <label for="cv" class="my-3">Uploader le nouveau CV:</label> #}
+            {{ form_row(form.cv) }}
+            {{ form_row(form.valider) }}
+        </div>
+    </div>
+{{ form_end(form) }}
+{% endif %}
+    <div class="container">
+        <div class="col-3 m-3 ratio ratio-1x1">
+            <iframe class="" src="CV/CV Nicolas Diot.pdf" width="100%"></iframe>
+        </div>
+    </div>
+{% endblock %}
+{% block footer %}
+    {% include 'footer.html.twig' %}
+{% endblock %}

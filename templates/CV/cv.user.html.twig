@@ -1,9 +1,26 @@
+{% set page = "cv" %}
 {% include 'base.html.twig' %}
 
 {% block body %}
-    <div class="container">
-        <div class="col-3 m-3 ratio ratio-1x1">
-            <iframe class="" src="./CV/CV Nicolas Diot.pdf" width="100%"></iframe>
-        </div>
+
+<div class="container">
+    <p class="mx-3">
+        Si votre naviguateur ne support pas les PDF intégrés, vous pouvez visualiser le CV 
+        <a href="./CV/CV Nicolas Diot.pdf">ici</a>.
+    </p>
+    <p class="mx-3">
+        Ou le télécharger directement 
+        <a href="./CV/CV Nicolas Diot.pdf" download>ici</a>.
+    </p>
+    <div class="col-2 m-3 ratio" style="--bs-aspect-ratio: 140%; width: 100%;">
+        
+        <iframe class="" src="./CV/CV Nicolas Diot.pdf"></iframe>
+        {# <object data="./CV/CV Nicolas Diot.pdf" type="application/pdf"  internalinstanceid="9" title=""></object> #}
+            
     </div>
+</div>
+    
+{% endblock %}
+{% block footer %}
+    {% include 'footer.html.twig' %}
 {% endblock %}

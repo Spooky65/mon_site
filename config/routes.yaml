@@ -5,7 +5,15 @@ index:
 cv:
     path: /CV
     controller: App\Controller\CVController::index
+
+uploadCV:
+    path: /uploadCV
+    controller: App\Controller\CVController::uploadCV
     
 hashtag:
     path: /HashtagLive
     controller: App\Controller\HashtagController::index
+
+app_logout:
+    path: /logout
+    methods: GET

@@ -1,0 +1,68 @@
+{% set page = "movierama_crud" %}
+{% block header %}
+    {% include 'header.html.twig' %}
+{% endblock %}
+{% block stylesheets %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.3/datatables.min.css"/>
+ 
+{% endblock %}
+{% block javascripts %}
+{# <script src="https://code.jquery.com/jquery-3.5.1.js" ></script> #}
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.3/datatables.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#datatable').DataTable();
+} );
+</script>
+{% endblock %}
+
+{% block body %}
+<body>
+  <div class="container">
+    <div class="m-3">
+      <h2>Movierama</h2>
+    </div>
+    <br>
+    {# <div class="m-3">
+      <h5>Saisir un titre de film afin d'en avoir les détails</h5>
+    </div>
+    <div class="m-3">
+      <form action="{{ url('movierama_search') }}" method="get" class="input-group my-3 col-3">
+        <input id="movie" name="movie" type="search" class="form-control" placeholder="Titre..." aria-label="Search">
+        <button class="btn btn-primary" type="submit">Chercher</button>
+      </form>
+    </div> #}
+    <div class="container m-3">
+      <div class="row">
+    <table id="datatable" class="display" style="width:100%">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Titre original</th>
+      <th scope="col">Note</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% set i = 0 %}
+    {% for movie in movies %}
+        {% if movie.adult == 0 and i < 1000 %}
+
+  {% set i = i + 1 %}
+    <tr>
+      <td>{{ movie.id }}</td>
+      <td><h4>{{ movie.original_title }}</h4></td>
+      <td>{{ movie.popularity }}</td>
+    </tr>
+        {% endif %}
+      {% endfor %}
+    </tbody>
+  </table>
+    </div>
+  </div>
+  </div>
+</body>
+{% endblock %}
+
+{% block footer %}
+    {% include 'footer.html.twig' %}
+{% endblock %}

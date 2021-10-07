@@ -1,7 +1,9 @@
 {% set page = "login" %}
-{% extends 'base.html.twig' %}
+{% block header %}
+    {% include 'header.html.twig' %}
+{% endblock %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}{% endblock %}
 
 {% block body %}
     <div class="alert alert-danger alert-dismissible fade show" role="alert">

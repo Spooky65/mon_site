@@ -1,0 +1,60 @@
+{% set page = "movierama" %}
+{% block header %}
+    {% include 'header.html.twig' %}
+{% endblock %}
+
+{% block javascripts %}
+<script>
+</script>
+{% endblock %}
+
+
+{% block body %}
+<body class="">
+  <div class="container">
+    <div class="m-3">
+      <h2>Movierama</h2>
+    </div>
+    {# <div class="m-3">
+      <a class="btn btn-primary" href="{{ path('movierama_search') }}" role="button">Rechercher</a>
+    </div> #}
+    <br>
+    <div class="m-3">
+      <form action="{{ url('movierama_search') }}" method="get" class="input-group my-3 col-3">
+        <input id="movie" name="movie" type="search" class="form-control" placeholder="Titre..." aria-label="Search" value="{{ title }}">
+        <button class="btn btn-primary" type="submit">Chercher</button>
+      </form>
+    </div>
+  </div>
+    <br>
+  <div class="container">
+    {% if movies.Response == "False" %}
+      <div class="m-3">
+        <h4>Pas de film trouvé avec ce titre ... :(</h4>
+      </div>
+    {% else %}
+    <div id="list" name="list" class="m-3">
+      {% for movie in movies.Search %}
+        {% if movie.Type == "movie" %}
+          <div class="container">
+            <div class="row">
+              <div class="col-3">
+                <a href={{ movie.Poster }}><img src={{ movie.Poster }} class="img-thumbnail" alt="..."></a>
+              </div>
+              <div class="col-6">
+                <h4>{{ movie.Title }}</h4>
+                Sortie : {{ movie.Year }}
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+    </div>
+  </div>
+</body>
+{% endblock %}
+
+{% block footer %}
+    {% include 'footer.html.twig' %}
+{% endblock %}

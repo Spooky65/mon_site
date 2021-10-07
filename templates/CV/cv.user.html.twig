@@ -1,5 +1,7 @@
 {% set page = "cv" %}
-{% include 'base.html.twig' %}
+{% block header %}
+    {% include 'header.html.twig' %}
+{% endblock %}
 
 {% block body %}
 
@@ -14,7 +16,7 @@
     </p>
     <div class="col-2 m-3 ratio" style="--bs-aspect-ratio: 140%; width: 100%;">
         
-        <iframe class="" src="./CV/CV Nicolas Diot.pdf"></iframe>
+        <iframe class="" align="middle" width="100%" height="800px" src="./CV/CV Nicolas Diot.pdf"></iframe>
         {# <object data="./CV/CV Nicolas Diot.pdf" type="application/pdf"  internalinstanceid="9" title=""></object> #}
             
     </div>

@@ -1,20 +1,70 @@
 {% set page = "hashtag" %}
-{% include 'base.html.twig' %}
+{% block header %}
+    {% include 'header.html.twig' %}
+{% endblock %}
+
+{% block javascripts %}
+  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+  {# <script src="./JS/tweetjs.js" charset="utf-8">
+  TweetJs.ListTweetsOnUserTimeline("PetrucciMusic",
+function (data) {
+    console.log(data);
+});
+TweetJs.Search("Music",
+function (data) {
+    console.log(data);
+});
+</script> #}  
+<script>
+  $( document ).ready(function() {
+    var divHashtag = document.getElementById("divHashtag");
+    var newIframe = document.createElement("iframe");
+    newIframe.setAttribute('src', 'https://twubs.com/embed/DominoChallenge/?messagesPerPage=10&headerBgColor=%231c6485&headerTextColor=%23ffffff');
+    newIframe.setAttribute('width', '600');
+    newIframe.setAttribute('height', '600');
+    newIframe.setAttribute('frameborder', '0');
+    var newa = document.createElement("a");
+    newa.setAttribute('id', 'Hashtag');
+    newa.setAttribute('href', 'https://twubs.com/DominoChallenge');
+    newa.innerHTML = '#DominoChallenge';
+    newIframe.appendChild(newa);
+    divHashtag.appendChild(newIframe);
+    $( "#HashtagButton" ).click(function() {
+      changeHashtag();
+    });
+    $(document).keyup(function(event) {
+      if ($("#HashtagInput").is(":focus") && event.key == "Enter") {
+          changeHashtag();
+      }
+    });
+    function changeHashtag() {
+      var text = $("#HashtagInput").val();
+      //alert("1");
+      newa.setAttribute('href', 'https://twubs.com/'+text);
+      //alert("2");
+      //$("#Hashtag").text = "http://twubs.com/text";
+      newa.innerHTML = '#'+text;
+      newIframe.setAttribute('src', 'https://twubs.com/embed/'+text+'/?messagesPerPage=10&headerBgColor=%231c6485&headerTextColor=%23ffffff');
+      $("#HashtagIframe").attr( 'src', function ( i, val ) { return val; });
+      //alert("Finish");
+    } 
+});
+</script>
+{% endblock %}
 
 {% block body %}
   <div class="container">
     <div class="input-group my-3 col-3">
-      <span class="input-group-text" id="basic-addon1">#</span>
-      <input type="text" class="form-control" placeholder="Hashtag" aria-label="Hashtag" aria-describedby="basic-addon1">
-      <button class="btn btn-outline-secondary" type="button" id="basic-addon1">Go Live</button>
+      <span id="basic-addon" class="input-group-text">#</span>
+      <input id="HashtagInput" type="text" class="form-control" placeholder="Hashtag" aria-label="Hashtag" aria-describedby="basic-addon1">
+      <button id="HashtagButton" class="btn btn-outline-secondary" type="button">Go Live</button>
+    </div>
+    <div id="divHashtag" class="input-group my-3 col-3">  
+      {# <iframe id="HashtagIframe" src="http://twubs.com/embed/DominoChallenge/?messagesPerPage=10&headerBgColor=%231c6485&headerTextColor=%23ffffff" width="600" height="600" frameborder="0"><a id="Hashtag" href="http://twubs.com/DominoChallenge">#DominoChallenge</a></iframe> #}
     </div>
   </div>
-  <a class="twitter-timeline"
-  href="https://twitter.com/hashtag/DominoChallenge?src=hashtag_click&f=live">
-  Tweets from https://twitter.com/twitter/lists/official-twitter-accts
-  </a>
-
 {% endblock %}
+
 {% block footer %}
     {% include 'footer.html.twig' %}
 {% endblock %}

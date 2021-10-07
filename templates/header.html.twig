@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html style="position: relative; min-height: 100%;">
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Nicolas Diot's Website{% endblock %}</title>
@@ -19,17 +19,33 @@
             {#{{ encore_entry_script_tags('app') }}#}
             <!-- JavaScript Bundle with Popper -->
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+            <script src="https://code.jquery.com/jquery-3.6.0.slim.js" integrity="sha256-HwWONEZrpuoh951cQD1ov2HUK5zA5DwJ1DNUXaM6FsY=" crossorigin="anonymous"></script>
+            <script>
+              $( document ).ready(function() {
+                var miniature = document.getElementById('miniature');
+                var tooltip = new bootstrap.Tooltip(miniature);
+
+                $( "#btn-miniature" ).click(function() {
+                  //miniature.setAttribute('data-bs-toggle', 'tooltip');
+                  //miniature.setAttribute('data-bs-html', 'true');
+                  //miniature.setAttribute('data-bs-placement', 'bottom');
+                  //miniature.setAttribute('title', '<b>C\'est moi !</b>');
+                  tooltip.show();
+                });
+              });
+            </script>
         {% endblock %}
 
     </head>
-    <header class="bg-dark text-white fixed-top sticky-top">
+    <header class="bg-dark text-white fixed-top sticky-top mb-3">
       <div class="container-fluid">
         <div class="d-flex flex-wrap align-items-center justify-content-between">
-          <a href="/" class="navbar-brand d-flex align-items-center text-white text-decoration-none">
-            <img class="rounded" style="width : 10%" src="Photo.jpg" alt="Nicolas Diot">
-            <p class="text-warning text-start m-3">Nicolas Diot</p>
-            {# <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg> #}
-          </a>
+          <div class="navbar-brand d-flex align-items-center text-white text-decoration-none">
+            <a href="/">
+              <img id="miniature" class="rounded img-thumbnail bg-dark" style="width : 100px" src="/images/index_miniature.jpg" alt="Nicolas Diot" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="bottom" title="<b>C'est moi !</b>">
+            </a>
+            <button id="btn-miniature" class="btn btn-warning m-3">Nicolas Diot</button>
+          </div>
           <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,10 +54,13 @@
               <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="nav nav-pills navbar-nav mb-2 justify-content-center mb-md-0">
                     <li><a href="{{ path('index') }}" class="nav-link px-2 text-white {% if page == "index" %} active {% endif %}">Présentation</a></li>
-                    <li><a href="{{ path('cv') }}" class="nav-link px-2 text-white {% if page == "cv" %} active {% endif %}">CV</a></li>
-                    <li><a href="{{ path('hashtag') }}" class="nav-link px-2 text-white {% if page == "hashtag" %} active {% endif %}">Hashtag Live</a></li>
+                    <li><a href="{{ path('moncv') }}" class="nav-link px-2 text-white {% if page == "cv" %} active {% endif %}">CV</a></li>
+                    <li><a href="http://82.66.84.237/HashtagLive" class="nav-link px-2 text-white {% if page == "hashtag" %} active {% endif %}">Hashtag Live</a></li>
                     {# <li><a href="https://192.168.1.145/mon_site" class="nav-link px-2 text-white">mon_site</a></li> #}
-                    <li><a href="https://192.168.1.145" class="nav-link px-2 text-white">Drupal</a></li>
+                    <li><a href="{{ path('drupal') }}" class="nav-link px-2 text-white">Drupal</a></li>
+                    <li><a href="{{ path('movierama_index') }}" class="nav-link px-2 text-white {% if page == "movierama" %} active {% endif %}">Movierama API</a></li>
+                    <li><a href="{{ path('movierama_crud_index') }}" class="nav-link px-2 text-white {% if page == "movierama_crud" %} active {% endif %}">Movierama DT</a></li>
+                    {# <li><a href="{{ path('movierama_test') }}" class="nav-link px-2 text-white">Movierama test</a></li> #}
                     {# <li><a href="https://www.google.fr" class="nav-link px-2 text-white">Google</a></li> #}
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                       {# <div class="m-3 mt-4">
@@ -73,13 +92,9 @@
         </div>
       </div>
     </header>
-  
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+
     {# <footer class="text-black fixed-bottom sticky-bottom">
     {% block footer %}
       {% include 'footer.html.twig' %}
     {% endblock %}
     </footer> #}
-</html>

@@ -1,9 +1,23 @@
+# "https://{default}/":
+#     type: upstream
+#     upstream: "app:http"
+#     tls:
+#         min_version: TLSv1.2
+#         strict_transport_security:
+#             enabled: true
+#             include_subdomains: true
+#             preload: true
+
+# "https://www.{default}/":
+#     type: redirect
+#     to: "https://{default}/"
+    
 index:
     path: /
     controller: App\Controller\MainController::index
-    
-cv:
-    path: /CV
+
+moncv:
+    path: /monCV
     controller: App\Controller\CVController::index
 
 uploadCV:
@@ -13,7 +27,33 @@ uploadCV:
 hashtag:
     path: /HashtagLive
     controller: App\Controller\HashtagController::index
+    
+httphashtag:
+    path: /HttpHashtagLive
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
+    defaults:
+        path: "http://nicolasdiot.ddns.net/HashtagLive"
+        permanent: true
 
 app_logout:
     path: /logout
     methods: GET
+
+drupal:
+    path: /drupal
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
+    defaults:
+        path: "https://nicolasdiot.ddns.net:446"
+        permanent: true
+        
+movierama_index:
+    path: /Movierama
+    controller: App\Controller\MovieramaController::index
+
+movierama_search:
+    path: /Movierama/search
+    controller: App\Controller\MovieramaController::search
+        
+movierama_crud_index:
+    path: /Movierama/index
+    controller: App\Controller\MovieramaCRUDController::index

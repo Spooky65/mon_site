@@ -1,0 +1,34 @@
+{% set page = "movierama" %}
+{% block header %}
+    {% include 'header.html.twig' %}
+{% endblock %}
+
+{% block javascripts %}
+<script>
+</script>
+{% endblock %}
+
+{% block body %}
+<body>
+  <div class="container">
+    <div class="m-3">
+      <h2>Movierama</h2>
+    </div>
+    <br>
+    <div class="m-3">
+      <h5>Saisir un titre de film afin d'en avoir les détails</h5>
+      <text>(L'API opensource n'accepte que les titre en anglais)</htext>
+    </div>
+    <div class="m-3">
+      <form action="{{ url('movierama_search') }}" method="get" class="input-group my-3 col-3">
+        <input id="movie" name="movie" type="search" class="form-control" placeholder="Titre..." aria-label="Search">
+        <button class="btn btn-primary" type="submit">Chercher</button>
+      </form>
+    </div>
+  </div>
+</body>
+{% endblock %}
+
+{% block footer %}
+    {% include 'footer.html.twig' %}
+{% endblock %}

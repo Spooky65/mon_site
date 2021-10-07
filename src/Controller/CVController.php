@@ -29,24 +29,11 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Validator\Constraints\File;
 
-/**
- * Controller used to manage blog contents in the public part of the site.
- *
- * @Route("/blog")
- *
- * @author Ryan Weaver <weaverryan@gmail.com>
- * @author Javier Eguiluz <javier.eguiluz@gmail.com>
- */
+
 class CVController extends AbstractController
 {
-    /**
-     * @Route("/CV", name="cv")
-     */
     public function index(Request $request): Response
     {
-        header("Cache-Control: no-cache, must-revalidate");
-        header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-        header("Content-Type: application/xml; charset=utf-8");
         
         $user = $this->getUser();
         if($user){

@@ -1,0 +1,1 @@
+sudo tail /var/log/apache2/project_error.log -f

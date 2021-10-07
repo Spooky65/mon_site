@@ -1,5 +1,7 @@
 {% set page = "index" %}
-{% include 'base.html.twig' %}
+{% block header %}
+    {% include 'header.html.twig' %}
+{% endblock %}
 {% block stylesheets %}
 {% endblock %}
 
@@ -10,19 +12,94 @@
 <div class="alert alert-success alert-dismissible fade show" role="alert">
   <strong>Bienvenue sur la page de présentation ! Le site est en cours de développement !</strong>
   <div class="progress">
-    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" style="width: 15%"></div>
+    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width: 30%"></div>
   </div>
 
   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
+    <br>
     <div class="mx-3 mt-3">
         <text>Ce site a été développé à l'aide du framework Symfony et de la collection d'outils Bootstrap.
-        Le but est de présenter un aperçu de mes compétences, à des fins de recrutement, en créant de petits projets qui utilisent diverses techniques ou technologies innovantes.</text>
+        Le but est de présenter un aperçu de mes compétences, à des fins de recrutement, en créant de petits projets qui utilisent diverses techniques ou technologies différentes.</text>
     </div>
     <div class="mx-3">
-        <text>Dans la sélection CV, vous pouvez retrouver mon curriculum vitae au format téléchargeable et imprimable.</text>
+        {# <text>Dans la sélection CV, vous pouvez retrouver mon curriculum vitae au format téléchargeable et imprimable.</text> #}
     </div>
     <div class="container">
+        <div class="row mt-3">
+            <div class="col m-3">
+                <div class="card" style="width: 18rem;">
+                    <a href="{{ path('moncv') }}">
+                        <img src="./images/cv_miniature.png" style="width: auto;heigth: 10px;" class="card-img-top img-thumbnail" alt="...">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">Curriculum vitae</h5>
+                        <p class="card-text">Retrouver ici un aperçu de mon CV au format téléchargeable et imprimable.</p>
+                        <a href="{{ path('moncv') }}" class="btn btn-primary">Page CV</a>
+                    </div>
+                </div>
+            </div>
+            {# <div class="col m-3">
+                <div class="card" style="width: 18rem;">
+                    <img src="./images/drupal_miniature.png" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Drupal</h5>
+                        <p class="card-text">Projet en cours. Installation et personalisation d'un site exemple en Drupal.</p>
+                        <a href="{{ path('drupal') }}" class="btn btn-primary">Drupal</a>
+                    </div>
+                </div>
+            </div> #}
+            <div class="col m-3">
+                <div class="card" style="width: 18rem;">
+                    <a href="{{ path('movierama_index') }}">
+                        <img src="./images/movierama_miniature.jpg" style="width: auto;heigth: 10px;" class="card-img-top img-thumbnail" alt="...">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">Movierama API</h5>
+                        <p class="card-text">Démo d'une interaction entre Symfony et une API externe sur le thême des films.</p>
+                        <a href="{{ path('movierama_index') }}" class="btn btn-primary">Movierama API</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col m-3">
+                <div class="card" style="width: 18rem;">
+                    <a href="{{ path('movierama_crud_index') }}">
+                        <img src="./images/movierama_miniature.jpg" style="width: auto;heigth: 10px;" class="card-img-top img-thumbnail" alt="...">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">Movierama DataTable</h5>
+                        <p class="card-text">Une DataTable SQL en JS et Bootstrap, sur le thême des films.</p>
+                        <a href="{{ path('movierama_crud_index') }}" class="btn btn-primary">Movierama DataTable</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col m-3">
+                <div class="card" style="width: 18rem;">
+                    <a href="#">
+                        <img src="./images/angular_miniature.png" class="card-img-top img-thumbnail" alt="...">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">Angular</h5>
+                        <p class="card-text">Projet en cours. Entrainement sur le framework Angular.</p>
+                        <a href="#" class="btn btn-primary">Demo Angular</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col m-3">
+                <div class="card" style="width: 18rem;">
+                    <a href="http://82.66.84.237/HashtagLive">
+                        <img src="./images/hashtag_miniature.png" class="card-img-top img-thumbnail" alt="...">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">Hashtag Live</h5>
+                        <p class="card-text">Projet en cours. Permet d'afficher en temps réelle les réactions de la communité twitter sur un Hashtag précis.</p>
+                        <a href="http://82.66.84.237/HashtagLive" class="btn btn-primary">Hashtag Live</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {# <div class="container">
         <div class="row">
             <div class="col m-3">
                 <blockquote class="trello-card">
@@ -34,7 +111,7 @@
                 <blockquote class="trello-card"><a href="https:&#x2F;&#x2F;trello.com&#x2F;c&#x2F;odmlanhY&#x2F;1-page-cv">Page CV</a></blockquote>     
             </div>
         </div>
-    </div>
+    </div> #}
     {# <div class="m-3">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">

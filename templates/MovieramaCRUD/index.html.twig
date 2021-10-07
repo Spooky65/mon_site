@@ -3,12 +3,13 @@
     {% include 'header.html.twig' %}
 {% endblock %}
 {% block stylesheets %}
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.3/datatables.min.css"/>
+{# <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.3/datatables.min.css"/> #}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css"/>
  
 {% endblock %}
 {% block javascripts %}
-{# <script src="https://code.jquery.com/jquery-3.5.1.js" ></script> #}
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.3/datatables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
 <script>
 $(document).ready(function() {
     $('#datatable').DataTable();
@@ -34,7 +35,7 @@ $(document).ready(function() {
     </div> #}
     <div class="container m-3">
       <div class="row">
-    <table id="datatable" class="display" style="width:100%">
+    <table id="datatable" class="table table-striped table-dark" style="width:100%">
   <thead>
     <tr>
       <th scope="col">ID</th>

@@ -45,6 +45,13 @@ drupal:
     defaults:
         path: "https://nicolasdiot.ddns.net:446"
         permanent: true
+
+angular:
+    path: /angular
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
+    defaults:
+        path: "/dist/angular/index.html"
+        permanent: true
         
 movierama_index:
     path: /Movierama

@@ -10,17 +10,26 @@
 
 {% block body %}
 <div class="alert alert-success alert-dismissible fade show" role="alert">
-  <strong>Bienvenue sur la page de présentation ! Le site est en cours de développement !</strong>
+  <strong>Bienvenue sur la page de présentation ! Le site est en cours de développement ! Ne pas hésiter à me retourner les erreurs et/ou pistes d'amélioration par mail.</strong>
   <div class="progress">
     <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width: 30%"></div>
   </div>
 
   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
-    <br>
-    <div class="mx-3 mt-3">
-        <text>Ce site a été développé à l'aide du framework Symfony et de la collection d'outils Bootstrap.
-        Le but est de présenter un aperçu de mes compétences, à des fins de recrutement, en créant de petits projets qui utilisent diverses techniques ou technologies différentes.</text>
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <div class="">
+        <b>Dernière mise à jour :</b>
+        <br>
+        <text>- <u>(13/10/21)</u> : J'ai ajouté une API (LibreTranslate) en python afin de traduire les synopsis des films sur la page "Movierama API". La traduction n'est pas parfaite &#129323; mais pour du gratuit c'est top. Je vous invite également à essayer le bouton jaune avec mon nom &#128540; !  “Les détails font la perfection, et la perfection n'est pas un détail.” (Léonard de Vinci). </text>
+        <br>
+        <text>- <u>(28/10/21)</u> : Ajout des détails du film dans "Movierama DT". </text>
+    </div>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+    <div class="mx-3 m-3 p-3">
+        <text>Ce site est développé à l'aide du framework Symfony 5, de la collection d'outils Bootstrap 5 et Jquery 3.6.<br>
+        Le but est de présenter un aperçu de mes compétences, en créant de petits projets qui exploitent différentes techniques et technologies. J'ai aussi intégré, à des fins de tests, une démo live de Drupal et d'Angular. </text>
     </div>
     <div class="mx-3">
         {# <text>Dans la sélection CV, vous pouvez retrouver mon curriculum vitae au format téléchargeable et imprimable.</text> #}
@@ -28,9 +37,9 @@
     <div class="container">
         <div class="row mt-3">
             <div class="col m-3">
-                <div class="card" style="width: 18rem;">
+                <div class="card text-center" style="width: 18rem;">
                     <a href="{{ path('moncv') }}">
-                        <img src="./images/cv_miniature.png" style="width: auto;heigth: 10px;" class="card-img-top img-thumbnail" alt="...">
+                        <img src="./images/cv_miniature.png" class="card-img-top img-thumbnail" alt="...">
                     </a>
                     <div class="card-body">
                         <h5 class="card-title">Curriculum vitae</h5>
@@ -39,54 +48,44 @@
                     </div>
                 </div>
             </div>
-            {# <div class="col m-3">
-                <div class="card" style="width: 18rem;">
-                    <img src="./images/drupal_miniature.png" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Drupal</h5>
-                        <p class="card-text">Projet en cours. Installation et personalisation d'un site exemple en Drupal.</p>
-                        <a href="{{ path('drupal') }}" class="btn btn-primary">Drupal</a>
-                    </div>
-                </div>
-            </div> #}
             <div class="col m-3">
-                <div class="card" style="width: 18rem;">
+                <div class="card text-center" style="width: 18rem;">
                     <a href="{{ path('movierama_index') }}">
-                        <img src="./images/movierama_miniature.jpg" style="width: auto;heigth: 10px;" class="card-img-top img-thumbnail" alt="...">
+                        <img src="./images/movierama_miniature.jpg" class="card-img-top img-thumbnail" alt="...">
                     </a>
                     <div class="card-body">
                         <h5 class="card-title">Movierama API</h5>
-                        <p class="card-text">Démo d'une interaction entre Symfony et une API externe sur le thême des films.</p>
+                        <p class="card-text">Démo d'une interaction entre Symfony et une API externe sur le thème des films.</p>
                         <a href="{{ path('movierama_index') }}" class="btn btn-primary">Movierama API</a>
                     </div>
                 </div>
             </div>
             <div class="col m-3">
-                <div class="card" style="width: 18rem;">
+                <div class="card text-center" style="width: 18rem;">
                     <a href="{{ path('movierama_crud_index') }}">
-                        <img src="./images/movierama_miniature.jpg" style="width: auto;heigth: 10px;" class="card-img-top img-thumbnail" alt="...">
+                        <img src="./images/movierama_miniature.jpg" class="card-img-top img-thumbnail" alt="...">
                     </a>
                     <div class="card-body">
                         <h5 class="card-title">Movierama DataTable</h5>
-                        <p class="card-text">Une DataTable SQL en JS et Bootstrap, sur le thême des films.</p>
+                        <p class="card-text">Projet en cours. Une DataTable SQL en JS et Bootstrap, sur le thème des films.</p>
                         <a href="{{ path('movierama_crud_index') }}" class="btn btn-primary">Movierama DataTable</a>
                     </div>
                 </div>
             </div>
             <div class="col m-3">
-                <div class="card" style="width: 18rem;">
-                    <a href="#">
+                <div class="card text-center" style="width: 18rem;">
+                    <a href="{{ path('angular') }}">
                         <img src="./images/angular_miniature.png" class="card-img-top img-thumbnail" alt="...">
                     </a>
                     <div class="card-body">
                         <h5 class="card-title">Angular</h5>
                         <p class="card-text">Projet en cours. Entrainement sur le framework Angular.</p>
-                        <a href="#" class="btn btn-primary">Demo Angular</a>
+                        <a href="{{ path('angular') }}" class="btn btn-primary">Demo Angular</a>
                     </div>
                 </div>
             </div>
-            <div class="col m-3">
-                <div class="card" style="width: 18rem;">
+            {# <div class="col m-3">
+                <div class="card text-center" style="width: 18rem;">
                     <a href="http://82.66.84.237/HashtagLive">
                         <img src="./images/hashtag_miniature.png" class="card-img-top img-thumbnail" alt="...">
                     </a>
@@ -94,6 +93,30 @@
                         <h5 class="card-title">Hashtag Live</h5>
                         <p class="card-text">Projet en cours. Permet d'afficher en temps réelle les réactions de la communité twitter sur un Hashtag précis.</p>
                         <a href="http://82.66.84.237/HashtagLive" class="btn btn-primary">Hashtag Live</a>
+                    </div>
+                </div>
+            </div> #}
+            <div class="col m-3">
+                <div class="card text-center" style="width: 18rem;">
+                    <a href="{{ path('drupal') }}">
+                        <img src="./images/drupal_miniature.png" class="card-img-top img-thumbnail" alt="...">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">Drupal</h5>
+                        <p class="card-text">Projet en cours. Installation et personnalisation d'un site exemple en Drupal.</p>
+                        <a href="{{ path('drupal') }}" class="btn btn-primary">Demo Drupal</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col m-3">
+                <div class="card text-center" style="width: 18rem;">
+                    <a href="#">
+                        <img src="/images/No-Image-Placeholder.svg" class="card-img-top img-thumbnail" alt="...">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">A venir ...</h5>
+                        <p class="card-text">Projet en cours. Permettra d'afficher en temps réelle les réactions de la communauté Twitter, en sélectionnant un Hashtag.</p>
+                        <a href="#" class="btn btn-primary">Hashtag Live</a>
                     </div>
                 </div>
             </div>

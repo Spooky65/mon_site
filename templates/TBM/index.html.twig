@@ -1,0 +1,307 @@
+{% set page = "tbm" %}
+{% block header %}
+    {% include 'header.html.twig' %}
+{% endblock %}
+
+{% block javascripts %}
+<script src="https://data.bordeaux-metropole.fr/api/cub.xjs?key=227QRUVWYZ"></script>
+{# <script type="text/javascript" src="http://data.bordeaux-metropole.fr/api/cub.xjs?key=227QRUVWYZ"></script> #}
+<script type="text/javascript">
+
+var longitude = -0.513228;
+var latitude =  44.872066;
+CUB.ready(function() {
+  CUB.init('zone_carte');
+  // Passage en coordonnées GPS (longitude latitude en degrés décimaux)
+  // Cadrage sur Bordeaux (Coordonnées en RGF93/CC45)
+  //CUB.moveToExtent(new CUB.Extent(1411750, 4185585, 1420575, 4192045));
+  CUB.projection(CUB.projections.WGS84);
+  // On met le fond de plan OpenStreetMap
+  new CUB.Layer.Background('Mon arrière-plan', CUB.Layer.Background.layerType.OPENSTREETMAP);
+  // Centrage sur lormont. L'échelle courante est conservée.
+  // Pour changer d'échelle et cadrer au 1/1000e
+  var testl = 44.872066;
+  CUB.moveToPoint(new CUB.Position(longitude,latitude), 100000);
+
+  //alert('clic au point ' + CUB.getPosition());
+  var panel = new CUB.Panel({
+    width: 48,
+    height: 48,
+    top: CUB.getHeight() / 2 - 24,
+    left: CUB.getWidth() / 2 - 24,
+    content: '<img src="http://data.bordeaux-metropole.fr/dev/exemples/samples/loading.gif" style="border: 1px solid black"/>'
+  });
+  panel.disable();
+  //var dynamique = new CUB.Layer.Dynamic('Ma couche dynamique', 'http://data.bordeaux-metropole.fr/wms?key=227QRUVWYZ', { layerName: 'SV_VEHIC_P' });
+  // Création de la couche
+  var dynamique1 = new CUB.Layer.Dynamic('Ma couche dynamique 1', 'https://data.bordeaux-metropole.fr/wfs?key=227QRUVWYZ', { 
+		layerName: 'SV_CHEM_L',
+		selectable: true
+	});
+  var dynamique2 = new CUB.Layer.Dynamic('Ma couche dynamique 2', 'https://data.bordeaux-metropole.fr/wfs?key=227QRUVWYZ', { 
+		layerName: 'SV_ARRET_P',
+	});
+  var statique = new CUB.Layer.Static('Ma couche statique', 'https://data.bordeaux-metropole.fr/wms?key=227QRUVWYZ', { 
+    layerName: ['SV_VEHIC_P']
+  });
+
+  // events
+	//CUB.events.onPan = function() { panel.content('Déplacement panoramique'); };
+	//CUB.events.onZoom = function() { panel.content('Zoom'); };
+	//CUB.events.onRotate = function() { panel.content('Rotation de la carte'); };
+  //CUB.events.onClick = function(point) { alert('clic au point ' + point) };
+
+  function refreshMap() {
+    // for refresh
+    testl = testl + 0.000001;
+    CUB.moveToPoint(new CUB.Position(-0.513228,testl), 10000);
+  }
+
+  // setInterval(function () {refreshMap()}, 2000);
+
+  // Évènement déclenché à la sélection d'un objet (entité)
+  dynamique1.onSelect = function(entity) 
+  {
+    console.log('Vous avez sélectionné ' + entity.attributes.NOMNG);
+    console.log(entity.attributes);
+  }
+  //var statique = new CUB.Layer.Static('Ma couche statique', 'http://data.bordeaux-metropole.fr/wms?key=227QRUVWYZ', 'SV_VEHIC_P');
+});
+
+function refreshMapWithCoord() {
+  CUB.moveToPoint(new CUB.Position(longitude,latitude + 0.000001), 10000);
+}
+
+$( document ).ready(function() {
+  // ligne
+  var requestligneURL = 'https://data.bordeaux-metropole.fr/geojson/features/SV_LIGNE_A?key=227QRUVWYZ&filter={"vehicule":{"$in":["BUS"]}}&attributes=["gid","libelle"]';
+  var requestligne = new XMLHttpRequest();
+  requestligne.open('GET', requestligneURL);
+  requestligne.responseType = 'json';
+  requestligne.send();
+  requestligne.onload = function() {
+    var lignes = requestligne.response;
+    populateLignes(lignes);
+  }
+  function populateLignes(jsonObj) {
+    var selectLigne = document.getElementById('selectLigne');
+    selectLigne.onchange = function(e){
+      var gidLigne = e.target.value;
+      chargeChemin(gidLigne);
+    };
+    for (var j = 0; j < jsonObj['features'].length; j++) {
+      var option = document.createElement('option');
+      option.value = jsonObj['features'][j]['properties']['gid'];
+      option.textContent = jsonObj['features'][j]['properties']['libelle'];
+      if(jsonObj['features'][j]['properties']['libelle'] == 'Corol 32'){
+        option.selected = true;
+        chargeChemin(option.value);
+      }
+      selectLigne.appendChild(option);
+    }
+  }
+  
+  function chargeChemin(gidLigne) {
+    // arret
+    var requestCheminURL = 'https://data.bordeaux-metropole.fr/geojson/features/SV_CHEM_L?key=227QRUVWYZ&filter={"rs_sv_ligne_a":'+gidLigne+'}&attributes=["gid","libelle"]';
+    var requestChemin = new XMLHttpRequest();
+    requestChemin.open('GET', requestCheminURL);
+    requestChemin.responseType = 'json';
+    requestChemin.send();
+    requestChemin.onload = function() {
+      var Chemin = requestChemin.response;
+      populateChemin(Chemin);
+    }
+    function populateChemin(jsonObj) {
+      var selectChemin = document.getElementById('selectChemin');
+      $('#selectChemin').empty();
+      var selected = false;
+      selectChemin.onchange = function(e){
+        var gidChemin = e.target.value;
+        chargeArret(gidChemin);
+      };
+      for (var j = 0; j < jsonObj['features'].length; j++) {
+        var option = document.createElement('option');
+        option.value = jsonObj['features'][j]['properties']['gid'];
+        option.textContent = jsonObj['features'][j]['properties']['libelle'];
+        if(jsonObj['features'][j]['properties']['libelle'] == 'Bouliac Centre Commercial - Cenon Gare'){
+          option.selected = true;
+          chargeArret(option.value);
+          selected = true;
+        }
+        selectChemin.appendChild(option);
+      }
+      if(!selected){
+        option.selected = true;
+        chargeArret(option.value);
+      }
+    }
+  }
+
+  function chargeArret(gidChemin) {
+    // arret
+    var requestArretURL = 'https://data.bordeaux-metropole.fr/geojson/process/saeiv_arrets_chemin?key=227QRUVWYZ&datainputs={"gid":'+gidChemin+'}&attributes=["gid","libelle"]';
+    var requestArret = new XMLHttpRequest();
+    requestArret.open('GET', requestArretURL);
+    requestArret.responseType = 'json';
+    requestArret.send();
+    requestArret.onload = function() {
+      var arret = requestArret.response;
+      populateArret(arret);
+    }
+    function populateArret(jsonObj) {
+      var selectArret = document.getElementById('selectArret');
+      $('#selectArret').empty();
+      selectArret.onchange = function(e){
+        var arret_id = e.target.value;
+        var libellChemin = selectArret.options[selectArret.selectedIndex].text;
+        chargePassage(arret_id);
+        zoneArret(libellChemin);
+      };
+      for (var j = 0; j < jsonObj['features'].length; j++) {
+        var option = document.createElement('option');
+        option.value = jsonObj['features'][j]['properties']['gid'];
+        option.textContent = jsonObj['features'][j]['properties']['libelle'];
+        if(jsonObj['features'][j]['properties']['libelle'] == 'Avenue de Paris'){
+          option.selected = true;
+          chargePassage(option.value);
+          zoneArret(option.textContent);
+        }
+        selectArret.appendChild(option);
+      }
+    }
+  }
+
+  function zoneArret(libellChemin) {
+    // arret
+    var requestArretZURL = 'https://data.bordeaux-metropole.fr/geojson/features/SV_ARRET_P?key=227QRUVWYZ&attributes=["GEOM","IDENT","LIBELLE"]';
+    var requestArretZ = new XMLHttpRequest();
+    requestArretZ.open('GET', requestArretZURL);
+    requestArretZ.responseType = 'json';
+    requestArretZ.send();
+    requestArretZ.onload = function() {
+      var arretZ = requestArretZ.response;
+      searchArret(arretZ);
+    }
+    function searchArret(jsonObj) {
+      for (var j = 0; j < jsonObj['features'].length; j++) {
+        if(jsonObj['features'][j]['properties']['libelle'] == libellChemin){
+          longitude = jsonObj['features'][j]['geometry']['coordinates'][0];
+          latitude =  jsonObj['features'][j]['geometry']['coordinates'][1];
+          refreshMapWithCoord();
+          break;
+        }
+      }
+    }
+  }
+
+  setInterval(function () { chargePassage($('#selectArret').val()); }, 5000);
+  //setInterval(function () {refreshMapWithCoord()}, 3000);
+
+  document.getElementById('refreshPassage').onclick = function() {
+    chargePassage($('#selectArret').val());
+  }
+
+  function chargePassage(arret_id) {
+    // Passage
+    var requestPassageURL = 'https://data.bordeaux-metropole.fr/geojson/process/saeiv_arret_passages?key=227QRUVWYZ&datainputs={"arret_id":"'+arret_id+'"}&attributes=["libelle","hor_app","hor_estime","terminus","vehicule"]';
+    var requestPassage = new XMLHttpRequest();
+    requestPassage.open('GET', requestPassageURL);
+    requestPassage.responseType = 'json';
+    requestPassage.send();
+    requestPassage.onload = function() {
+      var passage = requestPassage.response;
+      populatePassage(passage);
+    }
+    function populatePassage(jsonObj) {
+      var div = document.getElementById('showPassage');
+      div.innerHTML = "";
+      for (var j = 0; j < jsonObj['features'].length; j++) {
+        if(jsonObj['features'][j]['properties']['libelle'] == document.getElementById('selectLigne').options[document.getElementById('selectLigne').selectedIndex].textContent){
+          var ul = document.createElement('ul');
+          var li = document.createElement('li');
+          ul.textContent = "Terminus = " + jsonObj['features'][j]['properties']['terminus'];
+          var horraireApp = new Date(jsonObj['features'][j]['properties']['hor_app']);
+          var time = `${(horraireApp.getHours()<10?'0':'') + horraireApp.getHours()}:${(horraireApp.getMinutes()<10?'0':'') + horraireApp.getMinutes()}:${(horraireApp.getSeconds()<10?'0':'') + horraireApp.getSeconds()}`;
+          li.textContent = "horraire approximatif = " + time;
+          ul.appendChild(li);
+          var li = document.createElement('li');
+          var horraireEst = new Date(jsonObj['features'][j]['properties']['hor_estime']);
+          if(horraireEst == "Thu Jan 01 1970 01:00:00 GMT+0100 (heure normale d’Europe centrale)"){
+            continue;
+          }
+          var time = `${(horraireEst.getHours()<10?'0':'') + horraireEst.getHours()}:${(horraireEst.getMinutes()<10?'0':'') + horraireEst.getMinutes()}:${(horraireEst.getSeconds()<10?'0':'') + horraireEst.getSeconds()}`;
+          li.textContent = "horraire estimé = " + time;
+          ul.appendChild(li);
+          //var li = document.createElement('li');
+          //li.textContent = "horraire estimé = " + horraireEst;
+          //ul.appendChild(li);
+          var li = document.createElement('li');
+          var calcul = Math.round((horraireEst - Date.now())/60000);
+          li.textContent = "temps restant = " + calcul + " minutes";
+          ul.appendChild(li);
+          div.appendChild(ul);
+        }
+      }
+    }
+  }
+});
+</script>
+{% endblock %}
+
+{% block body %}
+<body>
+  <div class="container text-center">
+    <div class="m-3">
+      <h1>Trajet en direct</h1>
+    </div>
+    <div class="m-3">
+      <h5>Réseau TBM</h5>
+      <div class="d-flex justify-content-center align-items-center col m-3">
+        <div id="zone_carte" style="width: 512px; height: 512px; border: 1px solid black"></div>
+      </div>
+      <div class="d-flex justify-content-center align-items-center col m-3">
+        <ods-dataset-context context="svcheml" svcheml-dataset="sv_chem_l" svcheml-parameters="{'refine.vehicule':'BUS','q':''}">
+            <ods-map no-refit="true" scroll-wheel-zoom="false" display-control="true" search-box="true" toolbar-fullscreen="true" toolbar-geolocation="true" basemap="jawg.streets" location="12,44.88981,-0.63343">
+                <ods-map-layer-group>
+                    <ods-map-layer context="svcheml" color="#C32D1C" picto="ods-circle" show-marker="true" display="auto" shape-opacity="0.5" point-opacity="1" border-color="#FFFFFF" border-opacity="1" border-size="1" border-pattern="solid" caption="true" caption-picto-color="#E5E5E5" title="Chemin d'une ligne SAEIV" description="       " size="4" size-min="3" size-max="5" size-function="linear"></ods-map-layer>
+                </ods-map-layer-group>
+            </ods-map>
+        </ods-dataset-context>
+      </div>
+      <input type="button" value="Vue générale" onclick="CUB.moveToWhole()">
+      <input type="button" value="CUB" onclick="new CUB.Layer.Background('Mon arrière-plan', CUB.Layer.Background.layerType.CUB);">
+      <input type="button" value="OpenStreetMap" onclick="new CUB.Layer.Background('Mon arrière-plan', CUB.Layer.Background.layerType.OPENSTREETMAP);">
+      <input type="button" value="centrer" onclick="refreshMapWithCoord();">
+      <input type="button" value="test" onclick="statique.refresh();">
+    </div>
+    <div class="container border border-dark border-4" style="border-style: solid; border-radius: 20px;">
+      <div class="row">
+        <div class="col">
+          <div class="d-flex justify-content-center align-items-center row m-3">
+            <select id="selectLigne" class="form-select m-3">
+            </select>
+            <select id="selectChemin" class="form-select m-3">
+            </select>
+            <select id="selectArret" class="form-select m-3">
+            </select>
+          </div>
+        </div>
+        <div class="col">
+          <div class="d-flex justify-content-center align-items-center row m-3">
+            <div id="showPassage" class="m-3"></div>
+            <div id="refresh" class="m-3">
+              <input class="btn btn-secondary" type="button" value="refresh" id="refreshPassage">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </br>
+</body>
+{% endblock %}
+
+{% block footer %}
+    {% include 'footer.html.twig' %}
+{% endblock %}

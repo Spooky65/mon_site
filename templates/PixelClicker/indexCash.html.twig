@@ -1,0 +1,250 @@
+{% set page = "PixelClicker" %}
+{% block header %}
+    {% include 'header.html.twig' %}
+{% endblock %}
+
+{% block javascripts %}
+<script type="text/javascript">
+$( document ).ready(function() {
+
+  var cashCountDiv = document.getElementById('cashCount');
+  var ppsDiv = document.getElementById('cashPerSec');
+  var genCountDiv = document.getElementById('generatorCount');
+  var genCostDiv = document.getElementById('generatorCost');
+  var genCost10Div = document.getElementById('generatorCost10');
+  var cashCount = 0;
+  // Somme des cash à créer
+  var cashToCreate = 0;
+  // gen1Var
+  var gen1Count = 0;
+  var gen1Cost = 10;
+  // cash per seconds
+  var pps = 0;
+  var refreshTime = 100;
+  cashCountDiv.innerHTML = cashCount;
+
+  refreshGenCount();
+
+  function refreshcashCount() {
+    cashCountDiv.innerHTML = Math.floor(cashCount * 100) / 100;
+    ppsDiv.innerHTML = Math.floor(pps * 100) / 100;
+  }
+
+  function refreshGenCount() {
+    genCountDiv.innerHTML = Math.floor(gen1Count * 100) / 100;
+    genCostDiv.innerHTML = Math.floor(gen1Cost * 100) / 100;
+    genCost10Div.innerHTML = Math.floor(gen1Cost + (gen1Cost*(9*1.1)) * 100) / 100;
+  }
+
+  function resetGame() {
+    cashCount = 0;
+    pps = 0;
+  }
+
+  setInterval(function () {
+    ppTick = Math.floor((pps * (refreshTime/1000)) * 100) / 100;
+    cashCount += ppTick;
+    refreshcashCount();
+    cashToCreate += ppTick;
+    while(cashToCreate >= 1){
+      cashToCreate = cashToCreate - 1;
+    }
+  }, refreshTime);
+
+  $( "#addcashButton" ).click(function() {
+    // add a cash
+    cashCount = cashCount + 100;
+    refreshcashCount();
+  });
+
+  $( "#addGeneratorButton" ).click(function() {
+    // add a generator
+    
+    if(cashCount >= gen1Cost){
+      cashCount -= gen1Cost;
+      pps += 0.1;
+      gen1Cost = Math.floor(gen1Cost * 1.1 * 100) / 100;
+      gen1Count += 1;
+    }
+    refreshcashCount();
+    refreshGenCount();
+  });
+
+  $( "#add10GeneratorButton" ).click(function() {
+    // add 10 generators
+    
+    if(cashCount >= (gen1Cost + (gen1Cost*(9*1.1)))){
+      cashCount -= (gen1Cost + (gen1Cost*(9*1.1)));
+      pps += 1;
+      gen1Cost = Math.floor(gen1Cost * (1.1*10) * 100) / 100;
+      gen1Count += (1*10);
+    }
+    refreshcashCount();
+    refreshGenCount();
+  });
+
+
+});
+</script>
+{% endblock %}
+
+{% block body %}
+<div class="container text-center p-3">
+  <div class="m-3">
+    <h1>Cash Clicker</h1>
+  </div>
+  <div class="m-3">
+    <h5>Objectif : <text>Investir !</text></h5>
+  </div>
+  <div class="m-3">
+    <text>Euros = </text>
+    <text id="cashCount"></text>
+  </div>
+  <div class="m-3">
+    <text>Euro par secondes = </text>
+    <text id="cashPerSec"></text>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col d-flex justify-content-center align-items-center">
+        <div class="row-cols-1 border border-dark border-4 border-solid my-3" style="border-radius: 20px;">
+          <div class="col">
+            <h5>Prêt</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="row-cols-1 border border-dark border-4 border-solid my-3" style="border-radius: 20px;">
+          <div class="col">
+            <h5>Acheter</h5>
+          </div>
+          <div class="col">
+            <input id="addcashButton" class="btn btn-primary" type="button" value="cash">
+          </div>
+          <div class="col">
+            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="Generator">
+            <text>cost = </text>
+            <text id="generatorCost"></text>
+            <input id="add10GeneratorButton" class="btn btn-secondary" type="button" value="X 10">
+            <text>cost = </text>
+            <text id="generatorCost10"></text>
+            <text>nb = </text>
+            <text id="generatorCount"></text>
+          </div>
+          <div class="col">
+            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="Generator cost 10">
+          </div>
+          <div class="col">
+            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="Generator cost 10">
+          </div>
+          <div class="col">
+            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="Generator cost 10">
+          </div>
+          <div class="col">
+            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="Generator cost 10">
+          </div>
+          <div class="col">
+            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="Generator cost 10">
+          </div>
+          <div class="col">
+            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="reset" onclick="resetGame();">
+          </div>
+          <div class="col">
+            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="add 1000" onclick="cashCount = cashCount + 1000;">
+          </div>
+          <div class="col">
+            <a href="{{ path('PixelClicker') }}" class="btn btn-primary">Pixel Clicker</a>
+          </div>
+        </div>
+        <div class="row-cols-1 border border-dark border-4 border-solid my-3" style="border-radius: 20px;">
+          <div class="col">
+            <h5>Vendre</h5>
+          </div>
+          <div class="col">
+            <input id="addcashButton" class="btn btn-primary" type="button" value="cash">
+          </div>
+          <div class="col">
+            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="Generator">
+            <text>cost = </text>
+            <text id="generatorCost"></text>
+            <input id="add10GeneratorButton" class="btn btn-secondary" type="button" value="X 10">
+            <text>cost = </text>
+            <text id="generatorCost10"></text>
+            <text>nb = </text>
+            <text id="generatorCount"></text>
+          </div>
+          <div class="col">
+            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="Generator cost 10">
+          </div>
+          <div class="col">
+            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="Generator cost 10">
+          </div>
+          <div class="col">
+            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="Generator cost 10">
+          </div>
+          <div class="col">
+            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="Generator cost 10">
+          </div>
+          <div class="col">
+            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="Generator cost 10">
+          </div>
+          <div class="col">
+            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="reset" onclick="resetGame();">
+          </div>
+          <div class="col">
+            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="add 1000" onclick="cashCount = cashCount + 1000;">
+          </div>
+          <div class="col">
+            <a href="{{ path('PixelClicker') }}" class="btn btn-primary">Pixel Clicker</a>
+          </div>
+        </div>
+      </div>
+      <div class="col d-flex justify-content-center align-items-center">
+        <div class="row-cols-1 border border-dark border-4 border-solid my-3" style="border-radius: 20px;">
+          <div class="col">
+            <h5>Investir</h5>
+          </div>
+          <div class="col">
+            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="Generator">
+            <text>cost = </text>
+            <text id="generatorCost"></text>
+            <input id="add10GeneratorButton" class="btn btn-secondary" type="button" value="X 10">
+            <text>cost = </text>
+            <text id="generatorCost10"></text>
+            <text>nb = </text>
+            <text id="generatorCount"></text>
+          </div>
+          <div class="col">
+            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="Generator cost 10">
+          </div>
+          <div class="col">
+            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="Generator cost 10">
+          </div>
+          <div class="col">
+            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="Generator cost 10">
+          </div>
+          <div class="col">
+            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="Generator cost 10">
+          </div>
+          <div class="col">
+            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="Generator cost 10">
+          </div>
+          <div class="col">
+            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="reset" onclick="resetGame();">
+          </div>
+          <div class="col">
+            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="add 1000" onclick="cashCount = cashCount + 1000;">
+          </div>
+          <div class="col">
+            <a href="{{ path('PixelClicker') }}" class="btn btn-primary">Pixel Clicker</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+    {% include 'footer.html.twig' %}
+{% endblock %}

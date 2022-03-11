@@ -1,0 +1,193 @@
+{% set page = "PixelClicker" %}
+{% block header %}
+    {% include 'header.html.twig' %}
+{% endblock %}
+
+{% block javascripts %}
+<script type="text/javascript">
+$( document ).ready(function() {
+
+  var width = 100;
+  var height = 100; 
+  var pixelBase = document.getElementById('pixelBase');
+  pixelBase.style.width = width+'px';
+  pixelBase.style.height = height+'px';
+  var pixelCountDiv = document.getElementById('pixelCount');
+  var ppsDiv = document.getElementById('pixelPerSec');
+  var genCountDiv = document.getElementById('generatorCount');
+  var genCostDiv = document.getElementById('generatorCost');
+  var genCost10Div = document.getElementById('generatorCost10');
+  var pixelCount = 0;
+  // Somme des pixel à créer
+  var pixelToCreate = 0;
+  // gen1Var
+  var gen1Count = 0;
+  var gen1Cost = 10;
+  // pixel per seconds
+  var pps = 0;
+  var refreshTime = 100;
+  pixelCountDiv.innerHTML = pixelCount;
+
+  function createTableBase() {
+    for (let indexY = 0; indexY < height; indexY++) {
+      var tr = document.createElement('tr');
+      tr.setAttribute("id", "Y"+indexY);
+      for (let indexX = 0; indexX < width; indexX++) {
+        var td = document.createElement('td');
+        td.setAttribute("id", indexY+"X"+indexX);
+        td.style.width = '1px';
+        td.style.height = '1px';
+        td.style.background = 'white';
+        //td.style.border = '1px solid black';
+        tr.appendChild(td);
+      }
+      pixelBase.appendChild(tr);
+    }
+  };
+  
+  createTableBase();
+  refreshGenCount();
+
+  function createPixel() {
+    var coordY = Math.floor(Math.random() * height);
+    var coordX = Math.floor(Math.random() * width);
+    var pixel = document.getElementById(coordY+"X"+coordX);
+    if (pixel.style.background == 'black') {
+      pixel.style.background = 'white';
+    }else{
+      pixel.style.background = 'black';
+    }
+  }
+
+  function refreshPixelCount() {
+    pixelCountDiv.innerHTML = Math.floor(pixelCount * 100) / 100;
+    ppsDiv.innerHTML = Math.floor(pps * 100) / 100;
+  }
+
+  function refreshGenCount() {
+    genCountDiv.innerHTML = Math.floor(gen1Count * 100) / 100;
+    genCostDiv.innerHTML = Math.floor(gen1Cost * 100) / 100;
+    genCost10Div.innerHTML = Math.floor(gen1Cost + (gen1Cost*(9*1.1)) * 100) / 100;
+  }
+
+  function resetGame() {
+    pixelCount = 0;
+    pps = 0;
+  }
+
+  setInterval(function () {
+    ppTick = Math.floor((pps * (refreshTime/1000)) * 100) / 100;
+    pixelCount += ppTick;
+    refreshPixelCount();
+    pixelToCreate += ppTick;
+    while(pixelToCreate >= 1){
+      pixelToCreate = pixelToCreate - 1;
+      createPixel();
+    }
+  }, refreshTime);
+
+  $( "#addPixelButton" ).click(function() {
+    // add a pixel
+    pixelCount = pixelCount + 100;
+    createPixel();
+    refreshPixelCount();
+  });
+
+  $( "#addGeneratorButton" ).click(function() {
+    // add a generator
+    
+    if(pixelCount >= gen1Cost){
+      pixelCount -= gen1Cost;
+      pps += 0.1;
+      gen1Cost = Math.floor(gen1Cost * 1.1 * 100) / 100;
+      gen1Count += 1;
+    }
+    refreshPixelCount();
+    refreshGenCount();
+  });
+
+  $( "#add10GeneratorButton" ).click(function() {
+    // add 10 generators
+    
+    if(pixelCount >= (gen1Cost + (gen1Cost*(9*1.1)))){
+      pixelCount -= (gen1Cost + (gen1Cost*(9*1.1)));
+      pps += 1;
+      gen1Cost = Math.floor(gen1Cost * (1.1*10) * 100) / 100;
+      gen1Count += (1*10);
+    }
+    refreshPixelCount();
+    refreshGenCount();
+  });
+
+
+});
+</script>
+{% endblock %}
+
+{% block body %}
+<div class="container text-center p-3">
+  <div class="m-3">
+    <h1>Pixel Clicker</h1>
+  </div>
+  <div class="m-3">
+    <h5>Objectif : <text>Clicker sur le pixel.</text></h5>
+    <br>
+  </div>
+  <div class="m-3">
+    <text>Pixels = </text>
+    <text id="pixelCount"></text>
+  </div>
+  <div class="m-3">
+    <text>Pixels per seconds = </text>
+    <text id="pixelPerSec"></text>
+  </div>
+  <div class="container">
+    <div class="row">
+      <table id="pixelBase" class="container border border-dark border-4 border-solid my-3"></table>
+      <div class="row-cols-1">
+        <div class="col">
+          <input id="addPixelButton" class="btn btn-primary" type="button" value="Pixel">
+        </div>
+        <div class="col">
+          <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="Generator">
+          <text>cost = </text>
+          <text id="generatorCost"></text>
+          <input id="add10GeneratorButton" class="btn btn-secondary" type="button" value="X 10">
+          <text>cost = </text>
+          <text id="generatorCost10"></text>
+          <text>nb = </text>
+          <text id="generatorCount"></text>
+        </div>
+        <div class="col">
+          <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="Generator cost 10">
+        </div>
+        <div class="col">
+          <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="Generator cost 10">
+        </div>
+        <div class="col">
+          <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="Generator cost 10">
+        </div>
+        <div class="col">
+          <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="Generator cost 10">
+        </div>
+        <div class="col">
+          <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="Generator cost 10">
+        </div>
+        <div class="col">
+          <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="reset" onclick="resetGame();">
+        </div>
+        <div class="col">
+          <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="add 1000" onclick="pixelCount = pixelCount + 1000;">
+        </div>
+        <div class="col">
+          <a href="{{ path('PixelClickerCash') }}" class="btn btn-primary">Cash Clicker</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+    {% include 'footer.html.twig' %}
+{% endblock %}

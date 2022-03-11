@@ -1,0 +1,134 @@
+{% set page = "timer" %}
+{% block header %}
+    {% include 'header.html.twig' %}
+{% endblock %}
+
+{% block javascripts %}
+<script src="./JS/timer.js"></script>
+<script>
+  $( document ).ready(function() {
+    // Timer
+    var divShowTimer = document.getElementById("TimerShow");
+    var divShowTimerPause = document.getElementById("TimerShowPause");
+    var aTimer = new Timer({
+      tick    : 1,
+      ontick  : function(ms) { console.log(ms + ' milliseconds left');divShowTimer.innerHTML = Math.floor(ms/3600000) + ' heure(s) ' + Math.floor(ms/60000)%60 + ' minute(s) ' + Math.round(ms/1000)%60 + ' second(s) restante(s)'; },
+      onstart : function() { console.log('timer started') },
+      onstop  : function() { console.log('timer stop') },
+      onpause : function() { console.log('timer set on pause') },
+      onend   : function() { console.log('timer ended normally') }
+    });
+    var windowObjectReference;
+    var strWindowFeatures = "menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=yes";
+
+    function openRequestedPopup() {
+      windowObjectReference = window.open("http://www.google.com/", "Google_WindowName", strWindowFeatures);
+    }
+    function closeRequestedPopup() {
+      windowObjectReference.close();
+      window.focus();
+    }
+
+    $( "#TimerButtonStart" ).click(function() {
+      var SelectTime = ($( "#TimerInputHour" ).val()*3600) + ($( "#TimerInputMin" ).val()*60) + $( "#TimerInputSec" ).val();
+      if(aTimer.getStatus() == "paused"){
+        divShowTimerPause.innerHTML = '';
+        aTimer.start();
+      }else if(SelectTime == 0){
+        alert("Timer à 0");
+      }else if(aTimer.getStatus() == "started"){
+
+      }else{
+        openRequestedPopup();
+        divShowTimerPause.innerHTML = '';
+        aTimer.start(SelectTime).on('end', function () {
+          divShowTimer.innerHTML = 'Fini!';
+          closeRequestedPopup();
+          alert('Fini!');
+        });
+      }
+    });
+    $( "#TimerButtonPause" ).click(function() {
+      if(aTimer.getStatus() == "started"){
+        divShowTimerPause.innerHTML = '<b class="text-secondary"> - Pause !</b>';
+        aTimer.pause();
+      }else if(aTimer.getStatus() == "paused"){
+        divShowTimerPause.innerHTML = '';
+        aTimer.start();
+      }
+    });
+    $( "#TimerButtonStop" ).click(function() {
+      divShowTimer.innerHTML = '';
+      divShowTimerPause.innerHTML = '<b class="text-danger">Stop !</b>';
+      aTimer.stop();
+      closeRequestedPopup();
+    });
+});
+</script>
+{% endblock %}
+
+{% block body %}
+  <div class="container text-center p-3">
+    <div class="m-3">
+      <h1>Timer web</h1>
+    </div>
+    <div class="m-3">
+      <h5>Objectif</h5>
+      <text>Dans un monde hyperconnecté où notre temps est précieux, notre horloge interne perd parfois de son efficacité et le temps passé sur internet en divertissement, bien qu'il puisse sembler court, est souvent étendu de plusieurs minutes. Afin de pallier a ce problème : le Timer web.</text>
+      <br>
+    </div>
+    <div class="m-3">
+      <h5>Description</h5>
+      <text>Sélectionner le temps à allouer, un onglet sera alors créé et se fermera une fois le timer terminé. Simple et efficace.</text>
+      <br>
+    </div>
+    <div class="container border border-dark border-4" style="border-style: solid; border-radius: 20px;">
+      <div class="m-3">
+        <h4>Saisir le nombre de minutes/seconde que vous voulez allouer pour votre temps de travail/divertissement</h4>
+      </div>
+      <div class="d-flex justify-content-center m-3 flex-row">
+        <div class="input-group m-3">
+          <input id="TimerInputHour" type="text" class="form-control" placeholder="0" aria-label="Timer" aria-describedby="basic-hour">
+          <span id="basic-hour" class="input-group-text">heures</span>
+        </div>
+        <div class="input-group m-3">
+          <input id="TimerInputMin" type="text" class="form-control" placeholder="0" aria-label="Timer" aria-describedby="basic-min">
+          <span id="basic-min" class="input-group-text">minutes</span>
+        </div>
+        <div class="input-group m-3">
+          <input id="TimerInputSec" type="text" class="form-control" placeholder="0" aria-label="Timer" aria-describedby="basic-sec">
+          <span id="basic-sec" class="input-group-text">secondes</span>
+        </div>
+      </div>
+      <div class="text-center m-3">
+        <h3><span id="TimerShow"></span><span id="TimerShowPause"></span></h3>
+      </div>
+      <div class="d-flex justify-content-center">
+        <div class="d-flex justify-content-evenly m-3 col-3">
+          <button id="TimerButtonStart" class="btn btn-primary" type="button">
+            <div class="d-flex justify-content-center align-items-center">
+              <span>Start</span>
+              <i class="cib-civicrm"></i>
+            </div>
+          </button>
+          <button id="TimerButtonPause" class="btn btn-outline-secondary" type="button">
+            <div class="d-flex justify-content-center align-items-center">
+              <span>Pause</span>
+              <i class="cil-media-pause"></i>
+            </div>
+          </button>
+          <button id="TimerButtonStop" class="btn btn-outline-danger" type="button">
+            <div class="d-flex justify-content-center align-items-center">
+              <span>Stop</span>
+              <i class="cil-media-stop"></i>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block footer %}
+    {% include 'footer.html.twig' %}
+{% endblock %}

@@ -28,6 +28,22 @@ hashtag:
     path: /HashtagLive
     controller: App\Controller\HashtagController::index
     
+timer:
+    path: /Timer
+    controller: App\Controller\TimerController::index
+
+tbm:
+    path: /TBM
+    controller: App\Controller\TBMController::index
+
+PixelClicker:
+    path: /PixelClicker
+    controller: App\Controller\PixelClickerController::index
+
+PixelClickerCash:
+    path: /PixelClickerCash
+    controller: App\Controller\PixelClickerController::indexCash
+    
 httphashtag:
     path: /HttpHashtagLive
     controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
@@ -64,3 +80,7 @@ movierama_search:
 movierama_crud_index:
     path: /Movierama/index
     controller: App\Controller\MovieramaCRUDController::index
+
+contraire:
+    path: /contraire/index
+    controller: App\Controller\ContraireController::index

@@ -12,7 +12,16 @@
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
             <link rel="stylesheet" href="https://unpkg.com/@coreui/icons@2.0.0-beta.3/css/all.min.css">
             <link rel="icon" href="/favicon.ico">
-
+            <style>
+            /*
+              @media (prefers-color-scheme: dark) {
+                body {
+                  background-color: black;
+                  color: white;
+                }
+              }
+              */
+            </style>
         {% endblock %}
 
         {% block javascripts %}
@@ -33,6 +42,24 @@
                   tooltip.show();
                   scroll(0, 10000);
                   setTimeout(function(){ tooltip.hide(); }, 3000);
+                });
+                $( "#flexSwitchCheckTheme" ).change(function() {
+                  if(this.checked) {
+                    $("body").css("background-color","black");
+                    $(".card").css("background-color","black");
+                    $("body").css("color","white");
+                    $("#contact_text").css("color","black");
+                    $(".border").css("color","white");
+                    $(".alert").removeClass("alert-success");
+                    $(".alert").addClass("alert-dark");
+                  }else{
+                    $("body").css("background-color","white");
+                    $(".card").css("background-color","white");
+                    $("body").css("color","black");
+                    $(".border").css("color","black");
+                    $(".alert").removeClass("alert-dark");
+                    $(".alert").addClass("alert-success");
+                  }
                 });
               });
             </script>
@@ -59,10 +86,13 @@
                     <li><a href="{{ path('moncv') }}" class="nav-link px-2 text-white {% if page == "cv" %} active {% endif %}">CV</a></li>
                     <li><a href="{{ path('movierama_index') }}" class="nav-link px-2 text-white {% if page == "movierama" %} active {% endif %}">Movierama API</a></li>
                     <li><a href="{{ path('movierama_crud_index') }}" class="nav-link px-2 text-white {% if page == "movierama_crud" %} active {% endif %}">Movierama DT</a></li>
+                    <li><a href="{{ path('PixelClicker') }}" class="nav-link px-2 text-white {% if page == "PixelClicker" %} active {% endif %}">Pixel Clicker</a></li>
                     {# <li><a href="{{ path('drupal') }}" class="nav-link px-2 text-white">Drupal</a></li> #}
 
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                     <li><a href="http://82.66.84.237/HashtagLive" class="nav-link px-2 text-white {% if page == "hashtag" %} active {% endif %}">Hashtag Live</a></li>
+                    <li><a href="./../../Demineur/demineur.html" class="nav-link px-2 text-white {% if page == "Demineur" %} active {% endif %}">Demineur</a></li>
+                    {# <li><a href="{{ path('contraire') }}" class="nav-link px-2 text-white {% if page == "Contraire" %} active {% endif %}">Je veux mon contraire</a></li> #}
                     {% endif %}
 
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
@@ -83,6 +113,24 @@
           {% endif %}
             </div>
           </nav>
+          <div class="switch">
+            <div class="container">
+              <div class="d-flex">
+                  Claire
+                  <div class="form-switch ms-2">
+                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckTheme">
+                  </div>
+                  <label for="flexSwitchCheckTheme" class="form-check-label">Sombre</label>
+              </div>
+              <div class="d-flex">
+                  Français
+                  <div class="form-switch form-check ms-2">
+                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckLanguage">
+                  </div>
+                  <label for="flexSwitchCheckLanguage" class="form-check-label">Anglais</label>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </header>

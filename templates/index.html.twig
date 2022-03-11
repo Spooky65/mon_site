@@ -17,6 +17,7 @@
 
   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
+{#
 <div class="alert alert-warning alert-dismissible fade show" role="alert">
     <div class="">
         <b>Dernière mise à jour :</b>
@@ -27,17 +28,21 @@
     </div>
   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
-    <div class="mx-3 m-3 p-3">
-        <text>Ce site est développé à l'aide du framework Symfony 5, de la collection d'outils Bootstrap 5 et Jquery 3.6.<br>
-        Le but est de présenter un aperçu de mes compétences, en créant de petits projets qui exploitent différentes techniques et technologies. J'ai aussi intégré, à des fins de tests, une démo live de Drupal et d'Angular. </text>
+#}
+    <div class="d-flex justify-content-center align-items-center">
+        <div class="d-flex justify-content-center align-items-center mx-3 m-3 p-3 border border-dark border-4" style="border-style: solid; border-radius: 20px;">
+            <text class="center">Ce site est développé à l'aide du framework Symfony 5, de la collection d'outils Bootstrap 5 et Jquery 3.6.<br>
+            Le but est de présenter un aperçu de mes compétences, en créant de petits projets qui exploitent différentes techniques et technologies. J'ai aussi intégré, à des fins de tests, une démo live de Drupal et d'Angular. </text>
+        </div>
     </div>
+    <br>
     <div class="mx-3">
         {# <text>Dans la sélection CV, vous pouvez retrouver mon curriculum vitae au format téléchargeable et imprimable.</text> #}
     </div>
-    <div class="container">
+    <div class="container border border-dark border-4" style="border-style: solid; border-radius: 20px;">
         <div class="row mt-3">
-            <div class="col m-3">
-                <div class="card text-center" style="width: 18rem;">
+            <div class="d-flex justify-content-center align-items-center col m-3">
+                <div class="card text-center border-0" style="width: 18rem;">
                     <a href="{{ path('moncv') }}">
                         <img src="./images/cv_miniature.png" class="card-img-top img-thumbnail" alt="...">
                     </a>
@@ -48,10 +53,10 @@
                     </div>
                 </div>
             </div>
-            <div class="col m-3">
-                <div class="card text-center" style="width: 18rem;">
+            <div class="d-flex justify-content-center align-items-center col m-3">
+                <div class="card text-center border-0" style="width: 18rem;">
                     <a href="{{ path('movierama_index') }}">
-                        <img src="./images/movierama_miniature.jpg" class="card-img-top img-thumbnail" alt="...">
+                        <img src="./images/movierama_api_miniature.png" class="card-img-top" alt="...">
                     </a>
                     <div class="card-body">
                         <h5 class="card-title">Movierama API</h5>
@@ -60,10 +65,10 @@
                     </div>
                 </div>
             </div>
-            <div class="col m-3">
-                <div class="card text-center" style="width: 18rem;">
+            <div class="d-flex justify-content-center align-items-center col m-3">
+                <div class="card text-center border-0" style="width: 18rem;">
                     <a href="{{ path('movierama_crud_index') }}">
-                        <img src="./images/movierama_miniature.jpg" class="card-img-top img-thumbnail" alt="...">
+                        <img src="./images/movierama_miniature.jpg" class="card-img-top" alt="...">
                     </a>
                     <div class="card-body">
                         <h5 class="card-title">Movierama DataTable</h5>
@@ -72,19 +77,43 @@
                     </div>
                 </div>
             </div>
-            <div class="col m-3">
-                <div class="card text-center" style="width: 18rem;">
-                    <a href="{{ path('angular') }}">
-                        <img src="./images/angular_miniature.png" class="card-img-top img-thumbnail" alt="...">
+            <div class="d-flex justify-content-center align-items-center col m-3">
+                <div class="card text-center border-0" style="width: 18rem;">
+                    <a href="{{ path('timer') }}">
+                        <img src="./images/timer_miniature.jpg" class="card-img-top" alt="...">
                     </a>
                     <div class="card-body">
-                        <h5 class="card-title">Angular</h5>
-                        <p class="card-text">Projet en cours. Entrainement sur le framework Angular.</p>
-                        <a href="{{ path('angular') }}" class="btn btn-primary">Demo Angular</a>
+                        <h5 class="card-title">Timer web</h5>
+                        <p class="card-text">Projet en cours. Permet de concentrer son temps sur le web, grace un onglet éphémère et limité dans le temps.</p>
+                        <a href="{{ path('timer') }}" class="btn btn-primary">Timer web</a>
                     </div>
                 </div>
             </div>
-            {# <div class="col m-3">
+            <div class="d-flex justify-content-center align-items-center col m-3">
+                <div class="card text-center border-0" style="width: 18rem;">
+                    <a href="{{ path('tbm') }}">
+                        <img src="./images/tbm_miniature.png" class="card-img-top" alt="...">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">Trajet en direct</h5>
+                        <p class="card-text">Projet en cours. Suivi en direct de la ligne 32 du réseau TBM.</p>
+                        <a href="{{ path('tbm') }}" class="btn btn-primary">Trajet en direct</a>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center align-items-center col m-3">
+                <div class="card text-center border-0" style="width: 18rem;">
+                    <a href="{{ path('PixelClicker') }}">
+                        <img src="./images/pixel_miniature.jpg" class="card-img-top" alt="...">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">Pixel Clicker</h5>
+                        <p class="card-text">Projet en cours. Idle game de click sur le thème des pixels.</p>
+                        <a href="{{ path('PixelClicker') }}" class="btn btn-primary">Pixel Clicker</a>
+                    </div>
+                </div>
+            </div>
+            {# <div class="d-flex justify-content-center align-items-center col m-3">
                 <div class="card text-center" style="width: 18rem;">
                     <a href="http://82.66.84.237/HashtagLive">
                         <img src="./images/hashtag_miniature.png" class="card-img-top img-thumbnail" alt="...">
@@ -95,11 +124,11 @@
                         <a href="http://82.66.84.237/HashtagLive" class="btn btn-primary">Hashtag Live</a>
                     </div>
                 </div>
-            </div> #}
-            <div class="col m-3">
-                <div class="card text-center" style="width: 18rem;">
+            </div>
+            <div class="d-flex justify-content-center align-items-center col m-3">
+                <div class="card text-center border-0" style="width: 18rem;">
                     <a href="{{ path('drupal') }}">
-                        <img src="./images/drupal_miniature.png" class="card-img-top img-thumbnail" alt="...">
+                        <img src="./images/drupal_miniature.png" class="card-img-top" alt="...">
                     </a>
                     <div class="card-body">
                         <h5 class="card-title">Drupal</h5>
@@ -107,8 +136,8 @@
                         <a href="{{ path('drupal') }}" class="btn btn-primary">Demo Drupal</a>
                     </div>
                 </div>
-            </div>
-            <div class="col m-3">
+            </div> #}
+            <div class="d-flex justify-content-center align-items-center col m-3">
                 <div class="card text-center" style="width: 18rem;">
                     <a href="#">
                         <img src="/images/No-Image-Placeholder.svg" class="card-img-top img-thumbnail" alt="...">

@@ -1,6 +1,8 @@
-{% set page = "movierama" %}
 {% block header %}
-    {% include 'header.html.twig' %}
+    {{ render(controller(
+        'App\\Controller\\MainController::header',
+        { 'page': "movierama" }
+    )) }}
 {% endblock %}
 
 {% block javascripts %}

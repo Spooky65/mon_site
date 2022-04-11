@@ -1,0 +1,233 @@
+{% block header %}
+    {{ render(controller(
+        'App\\Controller\\MainController::header',
+        { 'page': "note" }
+    )) }}
+{% endblock %}
+<link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
+{% block javascripts %}
+<script src="//cdn.quilljs.com/1.3.6/quill.min.js"></script>
+<script>
+
+$( document ).ready(function() {
+
+  var idSelect = -1;
+var toolbarOptions = [
+  ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+  ['blockquote', 'code-block'],
+
+  [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+  [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+  [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+  [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+  [{ 'direction': 'rtl' }],                         // text direction
+
+  [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+  [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+  [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+  [{ 'font': [] }],
+  [{ 'align': [] }], ['link', 'image', 'video'],
+
+  ['clean']                                         // remove formatting button
+];
+var options = {
+  //debug: 'info',
+  modules: {
+    toolbar: toolbarOptions
+  },
+  placeholder: 'C\'est ici que la magie opère ...',
+  readOnly: false,
+  theme: 'snow'
+};
+var quillNew = new Quill('#editorNew', options);
+var quillUpdate = new Quill('#editorUpdate', options);
+var quillShow = new Quill('#editorShow', {
+    readOnly: false,
+  });
+
+
+  function saveNew() {
+    var title = document.getElementById("titleNew").value;
+    //var text = quillNew.getText(0);
+    delta = quillNew.getContents();
+    $.ajax('{{ path('createNote') }}', {
+        method : "POST",
+        data: { 
+              title : title,
+              text : JSON.stringify(delta),
+        }
+    }).done(function( data ) {
+      console.log(data);
+      window.location.reload();
+    });
+  };
+
+
+  $( "#saveNewButton" ).click(function() {
+    saveNew();
+    return false; // this stops normal button behaviour from executing;
+  });
+
+
+  $( ".showNote" ).click(function() {
+    idNote = this.getAttribute("idNote");
+    $.ajax('{{ path('showNote') }}', {
+        method : "POST",
+        data: { 
+              id : idNote,
+        }
+    }).done(function( data ) {
+      const note = JSON.parse(data);
+      $("#titleShow").html(note['title']);
+      quillShow.setContents(JSON.parse(note['text']));
+    });
+    return false; // this stops normal button behaviour from executing;
+  });
+
+  $( ".showModalUpdate" ).click(function() {
+    idNote = this.getAttribute("idNote");
+    $.ajax('{{ path('showNote') }}', {
+        method : "POST",
+        data: { 
+              id : idNote,
+        }
+    }).done(function( data ) {
+      const note = JSON.parse(data);
+      $("#idUpdate").val(idNote);
+      $("#titleUpdate").val(note['title']);
+      quillUpdate.setContents(JSON.parse(note['text']));
+      $("#modalUpdate").modal('show');
+    });
+    return false; // this stops normal button behaviour from executing;
+  });
+
+  $( "#saveUpdateButton" ).click(function() {
+    idNote = document.getElementById("idUpdate").value;
+    title = document.getElementById("titleUpdate").value;
+    //text = quillUpdate.getText(0);
+    delta = quillUpdate.getContents();
+    $.ajax('{{ path('updateNote') }}', {
+        method : "POST",
+        data: { 
+              id : idNote,
+              title : title,
+              text : JSON.stringify(delta),
+        }
+    }).done(function( data ) {
+      alert(data);
+      window.location.reload();
+    });
+    return false; // this stops normal button behaviour from executing;
+  });
+
+  $( ".deleteNote" ).click(function() {
+    if (confirm("Supprimer ?") == true) {
+      idNote = this.getAttribute("idNote");
+      $.ajax('{{ path('deleteNote') }}', {
+          method : "POST",
+          data: { 
+                id : idNote,
+          }
+      }).done(function( data ) {
+        alert("Supprimé !");
+        window.location.reload();
+      });
+    } else {
+    }
+    return false; // this stops normal button behaviour from executing;
+  });
+
+
+});
+</script>
+{% endblock %}
+
+{% block body %}
+<body>
+  <div class="container text-center">
+    <div class="m-3">
+      <h1>Bloc-notes</h1>
+    </div>
+  </div>
+  <div class="container text-center">
+    <!-- Button trigger modal -->
+    <div class="row">
+      <div class="col m-3 border border-dark border-4 border-solid">
+        <div class="m-3">
+          <h5 id="titleShow"></h5>
+        </div>
+        <div id="editorShow" class="editorShow"></div>
+      </div>
+      <div class="col m-3">
+        <div class="col m-3 border border-dark border-4 border-solid">
+          <button type="button" class="btn btn-primary m-3" data-bs-toggle="modal" data-bs-target="#modalNew">Nouvel note</button>
+        </div>
+        <div class="col m-3 border border-dark border-4 border-solid">
+          <h5>Liste de notes</h5>
+          <ul>
+              {% for note in notes %}
+                <div class="col">
+                  <button class="showNote btn btn-light btn-rounded btn-xs" idNote="{{ note.id }}">{{ note.title }}</button>
+                  <button class="showModalUpdate btn btn-light btn-rounded btn-xs" idNote="{{ note.id }}"><svg width="15" height="15" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z"/></svg></button>
+                  <button class="deleteNote btn btn-light btn-rounded btn-xs" idNote="{{ note.id }}"><svg width="15" height="15" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M480 416C497.7 416 512 430.3 512 448C512 465.7 497.7 480 480 480H150.6C133.7 480 117.4 473.3 105.4 461.3L25.37 381.3C.3786 356.3 .3786 315.7 25.37 290.7L258.7 57.37C283.7 32.38 324.3 32.38 349.3 57.37L486.6 194.7C511.6 219.7 511.6 260.3 486.6 285.3L355.9 416H480zM265.4 416L332.7 348.7L195.3 211.3L70.63 336L150.6 416L265.4 416z"/></svg></button>
+                </div>
+              {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="modalNew" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5>Ajouter une note</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="titleNew" class="form-label">Titre</label>
+            <input type="text" class="form-control" id="titleNew" aria-describedby="consigneNew">
+            <div id="consigneNew" class="form-text">255 caractères max.</div>
+          </div>
+          <div id="editorNew" class="editorNew"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>        
+          <input id="saveNewButton" class="btn btn-primary" type="button" value="Enregistrer">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="modalUpdate" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5>Modifier la note</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <input type="hidden" class="form-control" id="idUpdate">
+            <label for="titleUpdate" class="form-label">Titre</label>
+            <input type="text" class="form-control" id="titleUpdate" aria-describedby="consigneNew">
+            <div id="consigneNew" class="form-text">255 caractères max.</div>
+          </div>
+          <div id="editorUpdate" class="editorUpdate"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>        
+          <input id="saveUpdateButton" class="btn btn-primary" type="button" value="Enregistrer">
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+{% endblock %}
+
+{% block footer %}
+    {% include 'footer.html.twig' %}
+{% endblock %}

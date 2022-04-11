@@ -1,7 +1,10 @@
-{% set page = "timer" %}
 {% block header %}
-    {% include 'header.html.twig' %}
+    {{ render(controller(
+        'App\\Controller\\MainController::header',
+        { 'page': "timer" }
+    )) }}
 {% endblock %}
+<link rel="stylesheet" href="SCSS/timer.scss">
 
 {% block javascripts %}
 <script src="./JS/timer.js"></script>

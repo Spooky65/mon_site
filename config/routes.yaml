@@ -12,6 +12,16 @@
 #     type: redirect
 #     to: "https://{default}/"
     
+saveCookie:
+    path: /saveCookie
+    controller: App\Controller\MainController::saveCookie
+    methods: POST
+
+loadCookie:
+    path: /loadCookie
+    controller: App\Controller\MainController::loadCookie
+    methods: POST
+
 index:
     path: /
     controller: App\Controller\MainController::index
@@ -40,9 +50,17 @@ PixelClicker:
     path: /PixelClicker
     controller: App\Controller\PixelClickerController::index
 
-PixelClickerCash:
-    path: /PixelClickerCash
+CashClicker:
+    path: /CashClicker
     controller: App\Controller\PixelClickerController::indexCash
+
+PixelAdventure:
+    path: /PixelAdventure
+    controller: App\Controller\PixelClickerController::PixelAdventure
+
+APIFood:
+    path: /APIFood
+    controller: App\Controller\APIFoodController::index
     
 httphashtag:
     path: /HttpHashtagLive
@@ -84,3 +102,28 @@ movierama_crud_index:
 contraire:
     path: /contraire/index
     controller: App\Controller\ContraireController::index
+
+demineur:
+    path: /demineur
+    controller: App\Controller\DemineurController::index
+
+note:
+    path: /note
+    controller: App\Controller\NoteController::index
+
+createNote:
+    path: /note/create
+    controller: App\Controller\NoteController::create
+
+updateNote:
+    path: /note/update
+    controller: App\Controller\NoteController::update
+
+deleteNote:
+    path: /note/delete
+    controller: App\Controller\NoteController::delete
+
+showNote:
+    path: /note/show
+    controller: App\Controller\NoteController::show
+    methods: POST

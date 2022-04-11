@@ -1,7 +1,10 @@
-{% set page = "movierama_crud" %}
 {% block header %}
-    {% include 'header.html.twig' %}
+    {{ render(controller(
+        'App\\Controller\\MainController::header',
+        { 'page': "movierama_crud" }
+    )) }}
 {% endblock %}
+
 {% block stylesheets %}
 {# <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.3/datatables.min.css"/> #}
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css"/>
@@ -24,8 +27,8 @@ $(document).ready(function() {
           "infoFiltered": "(filtered from _MAX_ total records)"
       }
   } );
-  var myModal = document.getElementById('myModal')
-  var myInput = document.getElementById('myInput')
+  var myModal = document.getElementById('exampleModal')
+  var myInput = document.getElementById('myinput')
 
   myModal.addEventListener('shown.bs.modal', function () {
     myInput.focus()
@@ -36,13 +39,13 @@ function loadInfo(title) {
   const xhttp = new XMLHttpRequest();
   xhttp.onload = function() {
     var myObject = eval('(' + this.responseText + ')');
-    console.log(myObject);
+    if(myObject.Poster){
+      img = "  <a href="+myObject.Poster+"><img src="+myObject.Poster+" class='img img-thumbnail' alt='poster'></a>";
+    }else{
+      img = "  <img src='/images/No-Image-Placeholder.svg' class='mw-50 img-thumbnail' alt='poster'>";
+    }
     document.getElementById("infoMovie").innerHTML = "<div class='row'><div class='col-3' style='max-width : 200px;'>"+
-            "{% if movie.Poster == 'N/A' %}"+
-            "  <img src='/images/No-Image-Placeholder.svg' class='mw-50 img-thumbnail' alt='...'>"+
-            "{% else %}"+
-            "  <a href="+myObject.Poster+"><img src="+myObject.Poster+" class='img img-thumbnail' alt='...'></a>"+
-            "{% endif %}"+
+            img+
             "  <p class='text-center m-3'>"+
             "    <button class='btn btn-dark' type='button' data-bs-toggle='collapse' data-bs-target='#collapseExample"+myObject.imdbID+"' aria-expanded='false' aria-controls='collapseExample'>"+
             "      Plus"+
@@ -145,10 +148,10 @@ function loadInfo(title) {
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div id="infoMovie" class="modal-body">
-        A venir ...
+        Pas d'info sur ce film, sorry ...
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button id="myinput" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         {# <button type="button" class="btn btn-primary">Save changes</button> #}
       </div>
     </div>

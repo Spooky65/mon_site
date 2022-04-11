@@ -1,6 +1,8 @@
-{% set page = "login" %}
 {% block header %}
-    {% include 'header.html.twig' %}
+    {{ render(controller(
+        'App\\Controller\\MainController::header',
+        { 'page': "login" }
+    )) }}
 {% endblock %}
 
 {% block title %}{% endblock %}

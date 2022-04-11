@@ -25,14 +25,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Controller used to manage blog contents in the public part of the site.
+ * Controller used to manage APIFood contents in the public part of the site.
  *
- * @Route("/PixelClicker")
+ * @Route("/APIFood")
  *
  * @author Ryan Weaver <weaverryan@gmail.com>
  * @author Javier Eguiluz <javier.eguiluz@gmail.com>
  */
-class PixelClickerController extends AbstractController
+class APIFoodController extends AbstractController
 {
     /**
      * @Route("/", defaults={"page": "1", "_format"="html"}, methods="GET", name="blog_index")
@@ -46,29 +46,12 @@ class PixelClickerController extends AbstractController
      */
     public function index(Request $request): Response
     {
-        if ($request->cookies->has("data")) {
-            $cookie = $request->cookies->get("data");
-        }else {
-            $cookie = null;
-        }
         
-        return $this->render('PixelClicker\index.html.twig', [
-            'data'  => $cookie
-        ]);
+        $api = new \OpenFoodFacts\Api('food','fr');
+        $product = $api->getProduct('3057640385148');
 
-    }
-
-    public function indexCash(Request $request): Response
-    {
-        
-        return $this->render('PixelClicker\indexCash.html.twig', [
-        ]);
-    }
-
-    public function PixelAdventure(Request $request): Response
-    {
-        
-        return $this->render('PixelClicker\PixelAdventure.html.twig', [
+        return $this->render('APIFood/index.html.twig', [
+            "product" => $product
         ]);
     }
 

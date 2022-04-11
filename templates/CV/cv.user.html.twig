@@ -1,6 +1,8 @@
-{% set page = "cv" %}
 {% block header %}
-    {% include 'header.html.twig' %}
+    {{ render(controller(
+        'App\\Controller\\MainController::header',
+        { 'page': "cv" }
+    )) }}
 {% endblock %}
 
 {% block body %}

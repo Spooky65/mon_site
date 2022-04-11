@@ -1,7 +1,10 @@
-{% set page = "index" %}
 {% block header %}
-    {% include 'header.html.twig' %}
+    {{ render(controller(
+        'App\\Controller\\MainController::header',
+        { 'page': "index" }
+    )) }}
 {% endblock %}
+
 {% block stylesheets %}
 {% endblock %}
 
@@ -72,7 +75,7 @@
                     </a>
                     <div class="card-body">
                         <h5 class="card-title">Movierama DataTable</h5>
-                        <p class="card-text">Projet en cours. Une DataTable SQL en JS et Bootstrap, sur le thème des films.</p>
+                        <p class="card-text">Une DataTable SQL en JS et Bootstrap, sur le thème des films.</p>
                         <a href="{{ path('movierama_crud_index') }}" class="btn btn-primary">Movierama DataTable</a>
                     </div>
                 </div>
@@ -110,6 +113,18 @@
                         <h5 class="card-title">Pixel Clicker</h5>
                         <p class="card-text">Projet en cours. Idle game de click sur le thème des pixels.</p>
                         <a href="{{ path('PixelClicker') }}" class="btn btn-primary">Pixel Clicker</a>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center align-items-center col m-3">
+                <div class="card text-center border-0" style="width: 18rem;">
+                    <a href="{{ path('note') }}">
+                        <img src="./images/note_miniature.jpg" class="card-img-top" alt="...">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">Note</h5>
+                        <p class="card-text">Projet en cours. Note.</p>
+                        <a href="{{ path('note') }}" class="btn btn-primary">Note</a>
                     </div>
                 </div>
             </div>

@@ -1,6 +1,8 @@
-{% set page = "hashtag" %}
 {% block header %}
-    {% include 'header.html.twig' %}
+    {{ render(controller(
+        'App\\Controller\\MainController::header',
+        { 'page': "hashtag" }
+    )) }}
 {% endblock %}
 
 {% block javascripts %}

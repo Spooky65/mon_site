@@ -21,7 +21,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -33,7 +32,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @author Ryan Weaver <weaverryan@gmail.com>
  * @author Javier Eguiluz <javier.eguiluz@gmail.com>
  */
-class MainController extends AbstractController
+class DemineurController extends AbstractController
 {
     /**
      * @Route("/", defaults={"page": "1", "_format"="html"}, methods="GET", name="blog_index")
@@ -48,54 +47,8 @@ class MainController extends AbstractController
     public function index(Request $request): Response
     {
         
-        return $this->render('index.html.twig', [
+        return $this->render('Demineur\index.html.twig', [
         ]);
-    }
-
-    public function header(Request $request,$page): Response
-    {
-        if ($request->cookies->has("theme")) {
-            $cookie = $request->cookies->get("theme");
-        }else {
-            $cookie = "pas de cookie";
-        }
-        
-        return $this->render('header.html.twig', [
-            'page' => $page,
-            'theme'  => $cookie
-        ]);
-    }
-
-    public function saveCookie(Request $request): Response
-    {
-        $res = new Response();
-        if ($request->cookies->has($_POST["name"])) {
-            $res->headers->clearCookie($_POST["name"]);
-            $res->send();
-        }
-        $cookie = new Cookie($_POST["name"], //Nom cookie
-                    $_POST["value"], //Valeur
-                    strtotime('+6 month'), //expire le
-                    '/', //Chemin de serveur
-                    'nicolasdiot.ddns.net', //Nom domaine
-                    true, //Https seulement
-                    false); // Disponible uniquement dans le protocole HTTP
-            
-        $res->headers->setCookie( $cookie );
-        $res->send();
-        return $res;
-    }
-
-    public function loadCookie(Request $request): Response
-    {
-        if ($request->cookies->has($_POST["name"])) {
-            $cookie = $request->cookies->get($_POST["name"]);
-        }else {
-            $cookie = "pas de cookie";
-        }
-        return new Response(
-            $cookie
-        );
     }
 
 }

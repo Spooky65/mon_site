@@ -1,6 +1,8 @@
-{% set page = "PixelClicker" %}
 {% block header %}
-    {% include 'header.html.twig' %}
+    {{ render(controller(
+        'App\\Controller\\MainController::header',
+        { 'page': "CashClicker" }
+    )) }}
 {% endblock %}
 
 {% block javascripts %}
@@ -9,15 +11,24 @@ $( document ).ready(function() {
 
   var cashCountDiv = document.getElementById('cashCount');
   var ppsDiv = document.getElementById('cashPerSec');
-  var genCountDiv = document.getElementById('generatorCount');
-  var genCostDiv = document.getElementById('generatorCost');
-  var genCost10Div = document.getElementById('generatorCost10');
-  var cashCount = 0;
+  var farineCountDiv = document.getElementById('farineCount');
+  var levureCountDiv = document.getElementById('levureCount');
+  var painCountDiv = document.getElementById('painCount');
+  var painVenduCountDiv = document.getElementById('painVenduCount');
+  var cashCount = 10;
   // Somme des cash à créer
   var cashToCreate = 0;
   // gen1Var
-  var gen1Count = 0;
-  var gen1Cost = 10;
+  var farine = 0;
+  var farineCost = 2.72;
+  var farinePortion = 2;
+  var levure = 0;
+  var levureCost = 2.29;
+  var levurePortion = 7;
+  var pain = 0;
+  var painCost = 1.69;
+  var painPortion = 1;
+  var painVendu = 0;
   // cash per seconds
   var pps = 0;
   var refreshTime = 100;
@@ -31,9 +42,10 @@ $( document ).ready(function() {
   }
 
   function refreshGenCount() {
-    genCountDiv.innerHTML = Math.floor(gen1Count * 100) / 100;
-    genCostDiv.innerHTML = Math.floor(gen1Cost * 100) / 100;
-    genCost10Div.innerHTML = Math.floor(gen1Cost + (gen1Cost*(9*1.1)) * 100) / 100;
+    farineCountDiv.innerHTML = "Prix = " + farineCost + " Nombre = " + farine;
+    levureCountDiv.innerHTML = "Prix = " + levureCost + " Nombre = " + levure;
+    painCountDiv.innerHTML = "Prix = " + painCost + " Nombre = " + pain;
+    painVenduCountDiv.innerHTML = painVendu;
   }
 
   function resetGame() {
@@ -41,46 +53,55 @@ $( document ).ready(function() {
     pps = 0;
   }
 
+
   setInterval(function () {
     ppTick = Math.floor((pps * (refreshTime/1000)) * 100) / 100;
     cashCount += ppTick;
     refreshcashCount();
+    refreshGenCount();
     cashToCreate += ppTick;
-    while(cashToCreate >= 1){
-      cashToCreate = cashToCreate - 1;
-    }
   }, refreshTime);
 
-  $( "#addcashButton" ).click(function() {
-    // add a cash
-    cashCount = cashCount + 100;
-    refreshcashCount();
+  $( "#acheterFarineButton" ).click(function() {
+    // add a farine
+    if(cashCount > farineCost){
+      farine = farine + farinePortion;
+      cashCount = cashCount - farineCost;
+      refreshcashCount();
+      refreshGenCount();
+    }
   });
 
-  $( "#addGeneratorButton" ).click(function() {
-    // add a generator
-    
-    if(cashCount >= gen1Cost){
-      cashCount -= gen1Cost;
-      pps += 0.1;
-      gen1Cost = Math.floor(gen1Cost * 1.1 * 100) / 100;
-      gen1Count += 1;
+  $( "#acheterLevureButton" ).click(function() {
+    // add a levure
+    if(cashCount > levureCost){
+      levure = levure + levurePortion;
+      cashCount = cashCount - levureCost;
+      refreshcashCount();
+      refreshGenCount();
     }
-    refreshcashCount();
-    refreshGenCount();
   });
 
-  $( "#add10GeneratorButton" ).click(function() {
-    // add 10 generators
-    
-    if(cashCount >= (gen1Cost + (gen1Cost*(9*1.1)))){
-      cashCount -= (gen1Cost + (gen1Cost*(9*1.1)));
-      pps += 1;
-      gen1Cost = Math.floor(gen1Cost * (1.1*10) * 100) / 100;
-      gen1Count += (1*10);
+  $( "#makePainButton" ).click(function() {
+    // add a levure
+    if(farine > 0 && levure > 0){
+      farine = farine - 1;
+      levure = levure - 1;
+      pain = pain + painPortion;
+      refreshcashCount();
+      refreshGenCount();
     }
-    refreshcashCount();
-    refreshGenCount();
+  });
+
+  $( "#vendrePainButton" ).click(function() {
+    // add a levure
+    if(pain > 0){
+      pain = pain - 1;
+      cashCount = cashCount + painCost;
+      painVendu += 1;
+      refreshcashCount();
+      refreshGenCount();
+    }
   });
 
 
@@ -94,7 +115,7 @@ $( document ).ready(function() {
     <h1>Cash Clicker</h1>
   </div>
   <div class="m-3">
-    <h5>Objectif : <text>Investir !</text></h5>
+    <h5>Objectif : <text>Faire du pain ?!</text></h5>
   </div>
   <div class="m-3">
     <text>Euros = </text>
@@ -111,6 +132,9 @@ $( document ).ready(function() {
           <div class="col">
             <h5>Prêt</h5>
           </div>
+          <div class="col">
+            <input id="pret1000Button" class="btn btn-secondary m-2" type="button" value="Emprunter 1000€" disabled>
+          </div>
         </div>
       </div>
       <div class="col">
@@ -119,41 +143,20 @@ $( document ).ready(function() {
             <h5>Acheter</h5>
           </div>
           <div class="col">
-            <input id="addcashButton" class="btn btn-primary" type="button" value="cash">
+            <input id="acheterFarineButton" class="btn btn-secondary m-2" type="button" value="Farine Bio">
+            <text id="farineCount"></text>
           </div>
           <div class="col">
-            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="Generator">
-            <text>cost = </text>
-            <text id="generatorCost"></text>
-            <input id="add10GeneratorButton" class="btn btn-secondary" type="button" value="X 10">
-            <text>cost = </text>
-            <text id="generatorCost10"></text>
-            <text>nb = </text>
-            <text id="generatorCount"></text>
+            <input id="acheterLevureButton" class="btn btn-secondary m-2" type="button" value="Levure Bio">
+            <text id="levureCount"></text>
+          </div>
+        </div>
+        <div class="row-cols-1 border border-dark border-4 border-solid my-3" style="border-radius: 20px;">
+          <div class="col">
+            <h5>Transformer</h5>
           </div>
           <div class="col">
-            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="Generator cost 10">
-          </div>
-          <div class="col">
-            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="Generator cost 10">
-          </div>
-          <div class="col">
-            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="Generator cost 10">
-          </div>
-          <div class="col">
-            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="Generator cost 10">
-          </div>
-          <div class="col">
-            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="Generator cost 10">
-          </div>
-          <div class="col">
-            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="reset" onclick="resetGame();">
-          </div>
-          <div class="col">
-            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="add 1000" onclick="cashCount = cashCount + 1000;">
-          </div>
-          <div class="col">
-            <a href="{{ path('PixelClicker') }}" class="btn btn-primary">Pixel Clicker</a>
+            <input id="makePainButton" class="btn btn-secondary m-2" type="button" value="Faire du pain Bio">
           </div>
         </div>
         <div class="row-cols-1 border border-dark border-4 border-solid my-3" style="border-radius: 20px;">
@@ -161,41 +164,17 @@ $( document ).ready(function() {
             <h5>Vendre</h5>
           </div>
           <div class="col">
-            <input id="addcashButton" class="btn btn-primary" type="button" value="cash">
+            <input id="vendrePainButton" class="btn btn-secondary m-2" type="button" value="Pain Bio">
+            <text id="painCount"></text>
+          </div>
+        </div>
+        <div class="row-cols-1 border border-dark border-4 border-solid my-3" style="border-radius: 20px;">
+          <div class="col">
+            <h5>Vendu</h5>
           </div>
           <div class="col">
-            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="Generator">
-            <text>cost = </text>
-            <text id="generatorCost"></text>
-            <input id="add10GeneratorButton" class="btn btn-secondary" type="button" value="X 10">
-            <text>cost = </text>
-            <text id="generatorCost10"></text>
-            <text>nb = </text>
-            <text id="generatorCount"></text>
-          </div>
-          <div class="col">
-            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="Generator cost 10">
-          </div>
-          <div class="col">
-            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="Generator cost 10">
-          </div>
-          <div class="col">
-            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="Generator cost 10">
-          </div>
-          <div class="col">
-            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="Generator cost 10">
-          </div>
-          <div class="col">
-            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="Generator cost 10">
-          </div>
-          <div class="col">
-            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="reset" onclick="resetGame();">
-          </div>
-          <div class="col">
-            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="add 1000" onclick="cashCount = cashCount + 1000;">
-          </div>
-          <div class="col">
-            <a href="{{ path('PixelClicker') }}" class="btn btn-primary">Pixel Clicker</a>
+            <text>Pain vendu = </text>
+            <text id="painVenduCount"></text>
           </div>
         </div>
       </div>
@@ -203,40 +182,6 @@ $( document ).ready(function() {
         <div class="row-cols-1 border border-dark border-4 border-solid my-3" style="border-radius: 20px;">
           <div class="col">
             <h5>Investir</h5>
-          </div>
-          <div class="col">
-            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="Generator">
-            <text>cost = </text>
-            <text id="generatorCost"></text>
-            <input id="add10GeneratorButton" class="btn btn-secondary" type="button" value="X 10">
-            <text>cost = </text>
-            <text id="generatorCost10"></text>
-            <text>nb = </text>
-            <text id="generatorCount"></text>
-          </div>
-          <div class="col">
-            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="Generator cost 10">
-          </div>
-          <div class="col">
-            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="Generator cost 10">
-          </div>
-          <div class="col">
-            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="Generator cost 10">
-          </div>
-          <div class="col">
-            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="Generator cost 10">
-          </div>
-          <div class="col">
-            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="Generator cost 10">
-          </div>
-          <div class="col">
-            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="reset" onclick="resetGame();">
-          </div>
-          <div class="col">
-            <input id="addGeneratorButton" class="btn btn-secondary" type="button" value="add 1000" onclick="cashCount = cashCount + 1000;">
-          </div>
-          <div class="col">
-            <a href="{{ path('PixelClicker') }}" class="btn btn-primary">Pixel Clicker</a>
           </div>
         </div>
       </div>

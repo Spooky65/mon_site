@@ -1,0 +1,54 @@
+{% block header %}
+    {{ render(controller(
+        'App\\Controller\\MainController::header',
+        { 'page': "ldp" }
+    )) }}
+{% endblock %}
+
+{% block javascripts %}
+<script>
+
+$( document ).ready(function() {
+  div = document.getElementById("zone");
+  var iframe = document.createElement('iframe');
+  iframe.setAttribute('id', 'ifrm'); // assign an id
+  iframe.setAttribute('name', 'ifrm'); // assign an id
+  iframe.setAttribute('src', 'https://nicolasdiot.ddns.net');
+  div.appendChild(iframe);
+  iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+  if (!iframeDocument) {
+      throw "iframe couldn't be found in DOM.";
+  }
+//document.querySelectorAll('a').forEach(console.log);
+  alert(window.ifrm.document.getElementById('post-10490'));
+/*
+iframe.contentDocument.body.querySelectorAll('a').forEach(console.log);
+  alert(iframeDocument);
+  var ul = document.createElement('ul');
+  //  ul.appendChild(iframeContent);
+  liste.appendChild(ul);
+*/
+  var liste = document.getElementById('liste');
+  h3 = document.createElement('h3');
+  h3.innerHTML = "<h3>ok</h3>";
+  liste.appendChild(h3);
+});
+</script>
+{% endblock %}
+
+{% block body %}
+<body>
+  <div class="container text-center">
+    <div class="m-3">
+      <h1>Lecteur de page</h1>
+    </div>
+    <br>
+    <div id="zone" class="m-3"></div>
+    <div id="liste" class="border m-3"></div>
+  </div>
+</body>
+{% endblock %}
+
+{% block footer %}
+    {% include 'footer.html.twig' %}
+{% endblock %}

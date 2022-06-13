@@ -107,6 +107,35 @@ demineur:
     path: /demineur
     controller: App\Controller\DemineurController::index
 
+ecommerce:
+    path: /E-commerce
+    controller: App\Controller\EcommerceController::index
+
+prestashop:
+    path: /Prestashop
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
+    defaults:
+        # this value can be an absolute path or an absolute URL
+        path: 'https://nicolasdiot.ddns.net:446/'
+        permanent: true
+
+magento:
+    path: /Magento
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
+    defaults:
+        # this value can be an absolute path or an absolute URL
+        path: 'https://nicolasdiot.ddns.net:447/'
+        permanent: true
+
+akeneo:
+    path: /Akeneo
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
+    defaults:
+        # this value can be an absolute path or an absolute URL
+        path: 'https://nicolasdiot.ddns.net:448/'
+        permanent: true
+
+
 note:
     path: /note
     controller: App\Controller\NoteController::index
@@ -127,3 +156,11 @@ showNote:
     path: /note/show
     controller: App\Controller\NoteController::show
     methods: POST
+
+ldp:
+    path: /ldp
+    controller: App\Controller\LDPController::index
+
+euromillions:
+    path: /euromillions
+    controller: App\Controller\EuromillionsController::index

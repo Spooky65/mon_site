@@ -1,0 +1,141 @@
+{% block header %}
+    {{ render(controller(
+        'App\\Controller\\MainController::header',
+        { 'page': "euromillions" }
+    )) }}
+{% endblock %}
+
+{% block javascripts %}
+<script>
+</script>
+{% endblock %}
+
+{% block body %}
+<body>
+  <div class="container-fluid text-center">
+    <div class="m-3">
+      <h1>Tirage de loto</h1>
+    </div>
+    <br>
+    <div class="">
+      <div class="row">
+        <div class="col">
+            <h4>Historique de tirage</h4>
+            <table id="datatable" class="table table-striped table-dark">
+                <thead>
+                    <tr>
+                    <th scope="col">N°</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Boule 1</th>
+                    <th scope="col">Boule 2</th>
+                    <th scope="col">Boule 3</th>
+                    <th scope="col">Boule 4</th>
+                    <th scope="col">Boule 5</th>
+                    <th scope="col">Etoile 1</th>
+                    <th scope="col">Etoile 2</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tirage in tab %}
+                        <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ tirage["0"] }}</td>
+                        <td>{{ tirage["1"] }}</td>
+                        <td>{{ tirage["2"] }}</td>
+                        <td>{{ tirage["3"] }}</td>
+                        <td>{{ tirage["4"] }}</td>
+                        <td>{{ tirage["5"] }}</td>
+                        <td>{{ tirage["6"] }}</td>
+                        <td>{{ tirage["7"] }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-2">
+            <h4>Nombre de tirage par boule</h4>
+            <table id="bouleTir" class="table table-striped table-dark">
+                <thead>
+                    <tr>
+                    <th scope="col">Boule N°</th>
+                    <th scope="col">Nombre de fois tiré</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for key, boule in tabCalcBoule %}
+                        <tr>
+                        <td>{{ key }}</td>
+                        <td>{{ boule }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-2">
+            <h4>Top 5 de tirage de boule</h4>
+            <table id="topbouleTir" class="table table-striped table-dark">
+                <thead>
+                    <tr>
+                    <th scope="col">Boule N°</th>
+                    <th scope="col">Nombre de fois tiré</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for key, boule in top5Boule %}
+                        <tr>
+                        <td>{{ key }}</td>
+                        <td>{{ boule }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-2">
+            <h4>Nombre de tirage par étoile</h4>
+            <table id="etoileTir" class="table table-striped table-dark">
+                <thead>
+                    <tr>
+                    <th scope="col">Etoile N°</th>
+                    <th scope="col">Nombre de fois tiré</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for key, etoile in tabCalcEtoile %}
+                        <tr>
+                        <td>{{ key }}</td>
+                        <td>{{ etoile }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-2">
+            <h4>Top 5 de tirage d'étoile</h4>
+            <table id="topetoileTir" class="table table-striped table-dark">
+                <thead>
+                    <tr>
+                    <th scope="col">Etoile N°</th>
+                    <th scope="col">Nombre de fois tiré</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for key, etoile in top5Etoile %}
+                        {% if loop.index < 3 %}
+                            <tr>
+                            <td>{{ key }}</td>
+                            <td>{{ etoile }}</td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+{% endblock %}
+
+{% block footer %}
+    {% include 'footer.html.twig' %}
+{% endblock %}

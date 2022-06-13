@@ -1,0 +1,66 @@
+{% block header %}
+    {{ render(controller(
+        'App\\Controller\\MainController::header',
+        { 'page': "ecommerce" }
+    )) }}
+{% endblock %}
+
+{% block javascripts %}
+<script>
+</script>
+{% endblock %}
+
+{% block body %}
+<body>
+  <div class="container text-center">
+    <div class="m-3">
+      <h1>E-commerce</h1>
+    </div>
+    <br>
+    <div class="m-3">
+      <div class="row">
+        <div class="d-flex justify-content-center align-items-center col m-3">
+            <div class="card text-center" style="width: 18rem;">
+                <a href="{{ path('akeneo') }}">
+                    <img src="./images/akeneo_miniature.jpg" class="card-img-top" alt="...">
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title">Akeneo</h5>
+                    <p class="card-text">Akeneo.</p>
+                    <a href="{{ path('akeneo') }}" class="btn btn-primary">Akeneo</a>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center align-items-center col m-3">
+            <div class="card text-center" style="width: 18rem;">
+                <a href="{{ path('prestashop') }}">
+                    <img src="./images/prestashop_miniature.png" class="card-img-top" alt="...">
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title">Prestashop</h5>
+                    <p class="card-text">Prestashop.</p>
+                    <a href="{{ path('prestashop') }}" class="btn btn-primary">Prestashop</a>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center align-items-center col m-3">
+            <div class="card text-center" style="width: 18rem;">
+                <a href="{{ path('magento') }}">
+                    <img src="./images/magento_miniature2.png" class="card-img-top" alt="...">
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title">Magento</h5>
+                    <p class="card-text">Magento.</p>
+                    <a href="{{ path('magento') }}" class="btn btn-primary">Magento</a>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+{% endblock %}
+
+{% block footer %}
+    {% include 'footer.html.twig' %}
+{% endblock %}

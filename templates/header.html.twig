@@ -3,6 +3,15 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Nicolas Diot's Website{% endblock %}</title>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-9DT7HDM1R6"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-9DT7HDM1R6');
+        </script>
         {# <link rel="icon" href="{{ asset('favicon.ico') }}"> #}
         {# Run `composer require symfony/webpack-encore-bundle`
            and uncomment the following Encore helpers to start using Symfony UX #}
@@ -121,6 +130,7 @@
                   }else{
                     lightMode();
                   }
+                  
                   $.ajax('{{ path('saveCookie') }}', {
                       method : "POST",
                       data: { 
@@ -129,7 +139,6 @@
                       }
                   });
                   return false; // this stops normal button behaviour from executing;
-
                 });
               });
             </script>
@@ -159,11 +168,14 @@
                     <li><a href="{{ path('PixelClicker') }}" class="nav-link px-2 text-white {% if page == "PixelClicker" %} active {% endif %}">Pixel Clicker</a></li>
                     <li><a href="{{ path('note') }}" class="nav-link px-2 text-white {% if page == "note" %} active {% endif %}">Note</a></li>
                     {# <li><a href="{{ path('drupal') }}" class="nav-link px-2 text-white">Drupal</a></li> #}
+                    <li><a href="{{ path('ecommerce') }}" class="nav-link px-2 text-white {% if page == "ecommerce" %} active {% endif %}">E-commerce</a></li>
+                    <li><a href="{{ path('euromillions') }}" class="nav-link px-2 text-white {% if page == "euromillions" %} active {% endif %}">Loto</a></li>
 
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                     <li><a href="{{ path('CashClicker') }}" class="nav-link px-2 text-white {% if page == "CashClicker" %} active {% endif %}">Cash Clicker</a></li>
                     <li><a href="http://82.66.84.237/HashtagLive" class="nav-link px-2 text-white {% if page == "hashtag" %} active {% endif %}">Hashtag Live</a></li>
                     <li><a href="{{ path('demineur') }}" class="nav-link px-2 text-white {% if page == "demineur" %} active {% endif %}">Demineur</a></li>
+                    <li><a href="{{ path('ldp') }}" class="nav-link px-2 text-white {% if page == "ldp" %} active {% endif %}">LDP</a></li>
                     {# <li><a href="{{ path('contraire') }}" class="nav-link px-2 text-white {% if page == "Contraire" %} active {% endif %}">Je veux mon contraire</a></li> #}
 
                     {% endif %}
